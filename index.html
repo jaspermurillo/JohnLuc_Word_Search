@@ -37,6 +37,47 @@
     min-height: 100dvh;
     overflow-x: hidden;
   }
+/* Animated pulsing heart on the main home menu screen */
+.heart-home {
+  font-size: 80px;
+  margin: 8px 0;
+  filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+  animation: pulse-heart 1.5s ease-in-out infinite;
+  text-align: center;
+}
+@keyframes pulse-heart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Row wrapper for the in-game health bar */
+.lives-display-area {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 10px;
+}
+#hearts-container {
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+.game-heart {
+  font-size: 32px;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  display: inline-block;
+}
+
+/* Visual state applied when a player loses a life */
+.game-heart.lost {
+  transform: scale(0.6) translateY(5px);
+  opacity: 0.15;
+  filter: grayscale(100%); /* Turns the red emoji heart gray */
+}
 
   /* ---- SCREENS ---- */
   .screen { display:none; width:100%; min-height:100vh; min-height:100dvh; }
@@ -233,6 +274,26 @@
     width:200px;
     height:150px;
   }
+
+  .lives-row {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:12px 0 8px;
+  flex-wrap:nowrap;
+}
+
+.life-heart {
+  font-size:30px;
+  transition:transform 0.2s ease, opacity 0.2s ease;
+}
+
+.life-heart.lost {
+  opacity:0.25;
+  transform:scale(0.85);
+  filter:grayscale(1);
+}
 
   .tries-label {
     font-size:12px;
@@ -513,8 +574,8 @@
   <div class="cloud cloud-1"></div>
   <div class="cloud cloud-2"></div>
   <div class="game-logo">WordHop!</div>
-  <div class="logo-sub">🦘 Guess the word before the kangaroo hops away!</div>
-  <div class="kangaroo-home">🦘</div>
+  <div class="logo-sub">❤️ Guess the word before the kangaroo hops away!</div>
+  <div class="kangaroo-home">❤️ ❤️ ❤️</div>
   <p style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);margin-bottom:2px;">Pick a Category or Play All!</p>
   <div class="category-grid">
     <button class="cat-btn words" onclick="startGame('words')">
@@ -572,44 +633,17 @@
     </div>
   </div>
 
-  <div class="kangaroo-area">
-    <div class="kangaroo-scene">
-      <svg class="kangaroo-svg" id="kang-svg" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body -->
-        <ellipse cx="50" cy="72" rx="26" ry="22" fill="#C8860A"/>
-        <!-- Head -->
-        <ellipse cx="68" cy="44" rx="18" ry="16" fill="#C8860A"/>
-        <!-- Snout -->
-        <ellipse cx="82" cy="50" rx="9" ry="7" fill="#E0A030"/>
-        <!-- Nose -->
-        <circle cx="88" cy="48" r="3" fill="#5D2E0C"/>
-        <!-- Eye -->
-        <circle cx="75" cy="40" r="3.5" fill="white"/>
-        <circle cx="76" cy="40" r="2" fill="#2C1A0E"/>
-        <circle cx="77" cy="39" r="0.7" fill="white"/>
-        <!-- Ear -->
-        <ellipse cx="60" cy="30" rx="5" ry="10" fill="#C8860A" transform="rotate(-15,60,30)"/>
-        <ellipse cx="60" cy="31" rx="3" ry="7" fill="#E8A04A" transform="rotate(-15,60,31)"/>
-        <!-- Arms -->
-        <path d="M42 65 Q30 70 28 80" stroke="#C8860A" stroke-width="9" stroke-linecap="round" fill="none"/>
-        <path d="M42 65 Q35 58 38 50" stroke="#C8860A" stroke-width="8" stroke-linecap="round" fill="none"/>
-        <!-- Tail -->
-        <path d="M26 80 Q10 90 14 105" stroke="#C8860A" stroke-width="10" stroke-linecap="round" fill="none"/>
-        <!-- Legs -->
-        <path d="M44 90 Q38 100 32 108" stroke="#A06808" stroke-width="9" stroke-linecap="round" fill="none"/>
-        <path d="M54 92 Q52 102 48 109" stroke="#A06808" stroke-width="9" stroke-linecap="round" fill="none"/>
-        <!-- Feet -->
-        <ellipse cx="30" cy="108" rx="9" ry="4" fill="#8B5A00" transform="rotate(-20,30,108)"/>
-        <ellipse cx="47" cy="109" rx="9" ry="4" fill="#8B5A00" transform="rotate(5,47,109)"/>
-        <!-- Joey pouch hint -->
-        <ellipse cx="44" cy="82" rx="10" ry="8" fill="#E09020" opacity="0.5"/>
-        <!-- Pouch baby eyes -->
-        <circle cx="42" cy="81" r="2" fill="#5D2E0C" id="joey-eye" opacity="0"/>
-        <circle cx="47" cy="81" r="2" fill="#5D2E0C" opacity="0"/>
-      </svg>
-      <div class="speech-bubble" id="speech-bubble">Hop hop! Guess me!</div>
+ <div class="kangaroo-area">
+  <div class="kangaroo-scene" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <div style="font-size:72px;margin-top:10px;animation:bounce-home 2s ease-in-out infinite;">
+      ❤️
+    </div>
+
+    <div class="speech-bubble visible" id="speech-bubble">
+      Keep your hearts safe!
     </div>
   </div>
+</div>
 
   <div class="lives-row" id="lives-row"></div>
 
@@ -644,6 +678,63 @@
 </div>
 
 <script>
+
+  const maxWrong  = 7;
+let maxWrong = 7;
+
+// 1. CALL THIS inside your game setup or round-starting function
+function buildHeartsUI() {
+  const container = document.getElementById('hearts-container');
+  container.innerHTML = '';
+  for(let i = 0; i < maxLives; i++) {
+    const heartSpan = document.createElement('span');
+    heartSpan.className = 'game-heart';
+    heartSpan.innerText = '❤️';
+    container.appendChild(heartSpan);
+  }
+ function updateLives() {
+  const livesRow = document.getElementById('lives-row');
+  livesRow.innerHTML = '';
+
+  const remainingLives = maxWrong - wrongGuesses;
+
+  for (let i = 0; i < maxWrong; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'life-heart';
+
+    if (i < remainingLives) {
+      heart.textContent = '❤️';
+    } else {
+      heart.textContent = '🖤';
+      heart.classList.add('lost');
+    }
+
+    livesRow.appendChild(heart);
+  }
+}
+
+// 2. CALL THIS inside your incorrect letter guess logic handler
+function deductLife() {
+  if (remainingLives > 0) {
+    remainingLives--;
+    const hearts = document.querySelectorAll('.game-heart');
+    // Grays out the hearts from right-to-left
+    hearts[remainingLives].classList.add('lost');
+    updateLivesText();
+  }
+  
+  if (remainingLives <= 0) {
+    setTimeout(() => {
+      alert("Game Over! Try again.");
+      goHome(); // or your custom round reset method
+    }, 400);
+  }
+}
+
+function updateLivesText() {
+  document.getElementById('lives-text').innerText = `${remainingLives} Lives Remaining`;
+}
+
 // ============================================================
 // WORD DATABASE
 // ============================================================
