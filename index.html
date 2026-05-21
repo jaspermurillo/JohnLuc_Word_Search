@@ -3,1988 +3,392 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>WordHop - Guess the Word!</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --sky: #6EC6F5;
-    --cloud: #FFFFFF;
-    --grass: #4CAF50;
-    --sun: #FFD600;
-    --pink: #FF6B9D;
-    --purple: #9B59B6;
-    --orange: #FF8C42;
-    --red: #E74C3C;
-    --blue: #3498DB;
-    --teal: #1ABC9C;
-    --yellow: #F1C40F;
-    --dark: #2C3E50;
-    --mid: #566573;
-    --light-bg: #F0F8FF;
-    --card-bg: #FFFFFF;
-    --letter-bg: #EBF5FB;
-    --letter-border: #AED6F1;
-    --correct: #27AE60;
-    --wrong: #E74C3C;
-  }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0%,#B0E0E6 38%,#90EE90 38%,#4CAF50 100%);min-height:100vh;overflow-x:hidden;}
+.screen{display:none;width:100%;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
 
-  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+/* HOME */
+#home{align-items:center;justify-content:center;padding:16px;gap:12px;position:relative;overflow:hidden;}
+.sun{position:absolute;top:-10px;right:-10px;width:90px;height:90px;background:#FFD600;border-radius:50%;box-shadow:0 0 0 10px rgba(255,214,0,.3);}
+.cl{position:absolute;background:#fff;border-radius:50px;opacity:.85;}
+.cl::before,.cl::after{content:'';position:absolute;background:#fff;border-radius:50%;}
+.cl1{width:80px;height:28px;top:55px;left:8px;}.cl1::before{width:38px;height:38px;top:-18px;left:10px;}.cl1::after{width:28px;height:28px;top:-12px;left:34px;}
+.cl2{width:100px;height:32px;top:25px;right:18px;}.cl2::before{width:48px;height:48px;top:-22px;left:14px;}.cl2::after{width:38px;height:38px;top:-18px;left:44px;}
+.logo{font-family:'Fredoka One',cursive;font-size:50px;color:#fff;text-shadow:4px 4px 0 #FF6B9D,6px 6px 0 rgba(0,0,0,.2);letter-spacing:2px;margin-top:16px;}
+.logo-sub{font-size:13px;font-weight:700;color:rgba(255,255,255,.9);text-align:center;text-shadow:1px 1px 0 rgba(0,0,0,.2);margin-top:-6px;}
+.kang-home{font-size:80px;margin:4px 0;filter:drop-shadow(2px 4px 6px rgba(0,0,0,.2));animation:bh 2s ease-in-out infinite;}
+@keyframes bh{0%,100%{transform:translateY(0);}50%{transform:translateY(-12px);}}
+.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;width:100%;max-width:360px;}
+.cb{background:#fff;border:none;border-radius:14px;padding:12px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 4px 0 rgba(0,0,0,.1);transition:transform .12s,box-shadow .12s;}
+.cb:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.1);}
+.cb .ci{font-size:28px;}.cb .cn{font-size:11px;font-weight:800;color:#2C3E50;text-align:center;}.cb .cc{font-size:10px;color:#95A5A6;font-weight:600;}
+.cb.w{background:linear-gradient(135deg,#EBF5FB,#D6EAF8);}.cb.s{background:linear-gradient(135deg,#FEF9E7,#FCF3CF);}.cb.co{background:linear-gradient(135deg,#E8F8F5,#D1F2EB);}.cb.ca{background:linear-gradient(135deg,#F4ECF7,#E8DAEF);}.cb.cr{background:linear-gradient(135deg,#FDEDEC,#FADBD8);}.cb.e{background:linear-gradient(135deg,#FEF5E7,#FDEBD0);}.cb.p{background:linear-gradient(135deg,#EAFAF1,#D5F5E3);}.cb.ph{background:linear-gradient(135deg,#EBF5FB,#D2E9FC);}
+.start-btn{background:linear-gradient(135deg,#FF6B9D,#FF4757);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-family:'Fredoka One',cursive;font-size:20px;letter-spacing:1px;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.15);transition:transform .12s,box-shadow .12s;width:100%;max-width:360px;}
+.start-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.15);}
 
-  body {
-    font-family:'Nunito', sans-serif;
-    background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 40%, #90EE90 40%, #4CAF50 100%);
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
+/* GAME */
+#game{align-items:center;padding:0;}
+.gh{width:100%;display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(255,255,255,.25);}
+.back-btn{background:#fff;border:none;border-radius:10px;padding:7px 12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:#2C3E50;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.1);}
+.score-area{display:flex;gap:7px;}
+.sb{background:#fff;border-radius:10px;padding:5px 11px;font-weight:800;font-size:12px;color:#2C3E50;box-shadow:0 3px 0 rgba(0,0,0,.1);}
+.sb span{color:#FF6B9D;font-size:14px;}
+.cat-tag{background:rgba(255,255,255,.9);border-radius:8px;padding:4px 9px;font-size:10px;font-weight:800;color:#6C3483;text-transform:uppercase;letter-spacing:.5px;}
 
-  /* ---- SCREENS ---- */
-  .screen { display:none; width:100%; min-height:100vh; min-height:100dvh; }
-  .screen.active { display:flex; flex-direction:column; }
+/* LIVES BAR */
+.lives-bar{width:100%;max-width:400px;padding:8px 12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.lives-label{font-size:11px;font-weight:800;color:rgba(255,255,255,.95);text-shadow:1px 1px 0 rgba(0,0,0,.2);letter-spacing:.5px;text-transform:uppercase;}
+.hearts-row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;}
+.heart{font-size:22px;transition:all .25s;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15));}
+.heart.lost{opacity:.2;transform:scale(.8);filter:grayscale(1);}
+.heart.shake{animation:hs .3s ease;}
+@keyframes hs{0%,100%{transform:scale(.8);}50%{transform:scale(1.3) rotate(-15deg);}}
+.heart.pulse{animation:hp .25s ease;}
+@keyframes hp{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
 
-  /* ---- HOME SCREEN ---- */
-  #home {
-    align-items:center;
-    justify-content:center;
-    padding: 20px;
-    gap: 16px;
-    position:relative;
-    overflow:hidden;
-  }
+/* WORD */
+.word-area{width:100%;max-width:400px;padding:8px 10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.word-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;align-items:flex-end;}
+.lb{width:36px;height:42px;background:#fff;border-radius:10px;border:2.5px solid #AED6F1;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:#2C3E50;box-shadow:0 4px 0 #AED6F1;transition:all .25s;position:relative;}
+.lb.sp{width:12px;background:transparent;border:none;box-shadow:none;}
+.lb.rev{background:#EAFAF1;border-color:#27AE60;box-shadow:0 4px 0 #1E8449;color:#1A5276;animation:pltr .3s ease;}
+@keyframes pltr{0%{transform:scale(1.4);}100%{transform:scale(1);}}
+.lb.shk{animation:shk .3s ease;}
+@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
 
-  .sun-decoration {
-    position:absolute; top:-10px; right:-10px;
-    width:100px; height:100px;
-    background:#FFD600;
-    border-radius:50%;
-    box-shadow: 0 0 0 12px rgba(255,214,0,0.3), 0 0 0 24px rgba(255,214,0,0.15);
-  }
+/* HINT */
+.hint-sec{width:100%;max-width:400px;padding:4px 14px 0;}
+.hint-btn{background:linear-gradient(135deg,#F39C12,#E67E22);color:#fff;border:none;border-radius:10px;padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.15);display:flex;align-items:center;gap:5px;transition:transform .12s;}
+.hint-btn:active{transform:translateY(2px);}
+.hint-btn:disabled{background:#BDC3C7;cursor:default;box-shadow:none;}
+.hint-txt{font-size:11px;font-weight:700;color:#6C3483;background:#F4ECF7;border-radius:8px;padding:5px 10px;margin-top:4px;line-height:1.4;}
 
-  .cloud {
-    position:absolute;
-    background:white;
-    border-radius:50px;
-    opacity:0.85;
-  }
-  .cloud::before, .cloud::after {
-    content:''; position:absolute;
-    background:white; border-radius:50%;
-  }
-  .cloud-1 { width:80px; height:30px; top:60px; left:10px; }
-  .cloud-1::before { width:40px; height:40px; top:-20px; left:10px; }
-  .cloud-1::after { width:30px; height:30px; top:-14px; left:35px; }
-  .cloud-2 { width:100px; height:35px; top:30px; right:20px; }
-  .cloud-2::before { width:50px; height:50px; top:-25px; left:15px; }
-  .cloud-2::after { width:40px; height:40px; top:-20px; left:45px; }
+/* WRONG LETTERS */
+.wrong-area{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:4px 14px;max-width:400px;width:100%;}
+.wc{background:#FADBD8;border:2px solid #E74C3C;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:#C0392B;animation:pw .25s ease;}
+@keyframes pw{0%{transform:scale(1.3);}100%{transform:scale(1);}}
 
-  .game-logo {
-    font-family:'Fredoka One', cursive;
-    font-size: 52px;
-    color: white;
-    text-shadow: 4px 4px 0 #FF6B9D, 6px 6px 0 rgba(0,0,0,0.2);
-    letter-spacing: 2px;
-    margin-top:20px;
-    position:relative;
-  }
-  .logo-sub {
-    font-size:14px;
-    font-weight:700;
-    color:rgba(255,255,255,0.9);
-    text-align:center;
-    text-shadow:1px 1px 0 rgba(0,0,0,0.2);
-    margin-top:-8px;
-  }
+/* KEYBOARD */
+.kb-area{width:100%;max-width:400px;padding:6px 8px 10px;display:flex;flex-direction:column;gap:4px;margin-top:auto;}
+.key-row{display:flex;gap:3px;justify-content:center;}
+.key{flex:1;max-width:36px;height:46px;background:#fff;border:none;border-radius:10px;font-family:'Fredoka One',cursive;font-size:17px;color:#2C3E50;cursor:pointer;box-shadow:0 3px 0 #BDC3C7;transition:transform .1s,box-shadow .1s,background .2s;display:flex;align-items:center;justify-content:center;}
+.key:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #BDC3C7;}
+.key.uc{background:#EAFAF1;color:#1E8449;box-shadow:0 3px 0 #1E8449;cursor:default;}
+.key.uw{background:#FADBD8;color:#C0392B;box-shadow:0 3px 0 #E74C3C;cursor:default;}
+.key:disabled{opacity:.5;cursor:default;}
 
-  .kangaroo-home {
-    font-size: 90px;
-    margin: 8px 0;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
-    animation: bounce-home 2s ease-in-out infinite;
-  }
-  @keyframes bounce-home {
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-14px);}
-  }
-
-  .category-grid {
-    display:grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap:10px;
-    width:100%;
-    max-width:380px;
-  }
-
-  .cat-btn {
-    background:white;
-    border:none;
-    border-radius:16px;
-    padding:14px 10px;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-    transition: transform 0.12s, box-shadow 0.12s;
-    position:relative;
-    overflow:hidden;
-  }
-  .cat-btn:active { transform:translateY(3px); box-shadow:0 1px 0 rgba(0,0,0,0.1); }
-
-  .cat-btn .cat-icon { font-size:30px; }
-  .cat-btn .cat-name { font-size:12px; font-weight:800; color:#2C3E50; text-align:center; line-height:1.2; }
-  .cat-btn .cat-count { font-size:10px; color:#95A5A6; font-weight:600; }
-
-  .cat-btn.words { background:linear-gradient(135deg,#EBF5FB,#D6EAF8); }
-  .cat-btn.songs { background:linear-gradient(135deg,#FEF9E7,#FCF3CF); }
-  .cat-btn.countries { background:linear-gradient(135deg,#E8F8F5,#D1F2EB); }
-  .cat-btn.capitals { background:linear-gradient(135deg,#F4ECF7,#E8DAEF); }
-  .cat-btn.cars { background:linear-gradient(135deg,#FDEDEC,#FADBD8); }
-  .cat-btn.events { background:linear-gradient(135deg,#FEF5E7,#FDEBD0); }
-  .cat-btn.people { background:linear-gradient(135deg,#EAFAF1,#D5F5E3); }
-  .cat-btn.phrases { background:linear-gradient(135deg,#EBF5FB,#D2E9FC); }
-
-  .start-all-btn {
-    background:linear-gradient(135deg,#FF6B9D,#FF4757);
-    color:white;
-    border:none;
-    border-radius:18px;
-    padding:16px 40px;
-    font-family:'Fredoka One',cursive;
-    font-size:22px;
-    letter-spacing:1px;
-    cursor:pointer;
-    box-shadow:0 5px 0 rgba(0,0,0,0.15);
-    transition:transform 0.12s, box-shadow 0.12s;
-    width:100%;
-    max-width:380px;
-  }
-  .start-all-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,0.15);}
-
-  /* ---- GAME SCREEN ---- */
-  #game {
-    flex-direction:column;
-    align-items:center;
-    padding:0;
-    background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 35%, #90EE90 35%, #4CAF50 100%);
-  }
-
-  .game-header {
-    width:100%;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:10px 16px;
-    background:rgba(255,255,255,0.25);
-    backdrop-filter:blur(4px);
-  }
-
-  .back-btn {
-    background:white;
-    border:none;
-    border-radius:12px;
-    padding:8px 14px;
-    font-family:'Nunito',sans-serif;
-    font-weight:800;
-    font-size:14px;
-    color:#2C3E50;
-    cursor:pointer;
-    box-shadow:0 3px 0 rgba(0,0,0,0.1);
-  }
-
-  .score-area {
-    display:flex;
-    gap:8px;
-    align-items:center;
-  }
-
-  .score-badge {
-    background:white;
-    border-radius:12px;
-    padding:6px 12px;
-    font-weight:800;
-    font-size:13px;
-    color:#2C3E50;
-    box-shadow:0 3px 0 rgba(0,0,0,0.1);
-  }
-  .score-badge span { color:#FF6B9D; font-size:15px; }
-
-  .category-tag {
-    background:rgba(255,255,255,0.9);
-    border-radius:10px;
-    padding:4px 10px;
-    font-size:11px;
-    font-weight:800;
-    color:#6C3483;
-    text-transform:uppercase;
-    letter-spacing:0.5px;
-  }
-
-  /* HOUSE SCENE */
-  .house-area {
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:4px 0 0;
-  }
-
-  .house-svg {
-    width:200px;
-    height:150px;
-  }
-
-  .tries-label {
-    font-size:12px;
-    font-weight:800;
-    color:rgba(255,255,255,0.9);
-    text-shadow:1px 1px 0 rgba(0,0,0,0.2);
-    margin-top:2px;
-  }
-
-  .speech-bubble {
-    background:white;
-    border-radius:16px;
-    padding:6px 14px;
-    font-size:12px;
-    font-weight:700;
-    color:#2C3E50;
-    box-shadow:0 2px 8px rgba(0,0,0,0.12);
-    margin-top:4px;
-    display:none;
-    align-self:center;
-  }
-  .speech-bubble.visible { display:block; }
-
-  /* WORD DISPLAY */
-  .word-display-area {
-    width:100%;
-    padding:10px 12px 6px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-  }
-
-  .word-row {
-    display:flex;
-    gap:5px;
-    flex-wrap:wrap;
-    justify-content:center;
-    align-items:flex-end;
-    max-width:360px;
-  }
-
-  .letter-box {
-    width:28px;
-    height:32px;
-    background:white;
-    border-radius:8px;
-    border:2.5px solid #AED6F1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Fredoka One',cursive;
-    font-size:18px;
-    color:#2C3E50;
-    box-shadow:0 3px 0 #AED6F1;
-    transition: all 0.25s;
-    position:relative;
-  }
-  .letter-box.space-gap {
-    width:10px;
-    background:transparent;
-    border:none;
-    box-shadow:none;
-  }
-  .letter-box.revealed {
-    background:#EAFAF1;
-    border-color:#27AE60;
-    box-shadow:0 3px 0 #1E8449;
-    color:#1A5276;
-    animation: pop-letter 0.3s ease;
-  }
-  .letter-box.wrong-letter {
-    animation: shake-box 0.3s ease;
-  }
-  @keyframes pop-letter {
-    0%{transform:scale(1.4);} 100%{transform:scale(1);}
-  }
-  @keyframes shake-box {
-    0%,100%{transform:translateX(0);}
-    25%{transform:translateX(-4px);}
-    75%{transform:translateX(4px);}
-  }
-
-  /* HINT AREA */
-  .hint-section {
-    width:100%;
-    max-width:360px;
-    padding:4px 16px 0;
-  }
-  .hint-btn {
-    background:linear-gradient(135deg,#F39C12,#E67E22);
-    color:white;
-    border:none;
-    border-radius:12px;
-    padding:8px 20px;
-    font-family:'Nunito',sans-serif;
-    font-weight:800;
-    font-size:13px;
-    cursor:pointer;
-    box-shadow:0 3px 0 rgba(0,0,0,0.15);
-    display:flex;
-    align-items:center;
-    gap:6px;
-    transition:transform 0.12s;
-  }
-  .hint-btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,0.15);}
-  .hint-btn:disabled{background:#BDC3C7;cursor:default;box-shadow:none;}
-  .hint-text {
-    font-size:12px;
-    font-weight:700;
-    color:#6C3483;
-    background:#F4ECF7;
-    border-radius:10px;
-    padding:6px 12px;
-    margin-top:4px;
-    line-height:1.4;
-  }
-
-  /* WRONG LETTERS */
-  .wrong-letters-area {
-    display:flex;
-    flex-wrap:wrap;
-    gap:5px;
-    justify-content:center;
-    padding:4px 16px;
-    max-width:360px;
-    width:100%;
-  }
-  .wrong-letter-chip {
-    background:#FADBD8;
-    border:2px solid #E74C3C;
-    border-radius:8px;
-    width:26px;
-    height:26px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Fredoka One',cursive;
-    font-size:14px;
-    color:#C0392B;
-    animation: pop-wrong 0.25s ease;
-  }
-  @keyframes pop-wrong {
-    0%{transform:scale(1.3);}100%{transform:scale(1);}
-  }
-
-  /* KEYBOARD */
-  .keyboard-area {
-    width:100%;
-    max-width:400px;
-    padding:8px 8px 12px;
-    display:flex;
-    flex-direction:column;
-    gap:5px;
-    margin-top:auto;
-  }
-  .key-row {
-    display:flex;
-    gap:4px;
-    justify-content:center;
-  }
-  .key {
-    flex:1;
-    max-width:34px;
-    height:44px;
-    background:white;
-    border:none;
-    border-radius:10px;
-    font-family:'Fredoka One',cursive;
-    font-size:16px;
-    color:#2C3E50;
-    cursor:pointer;
-    box-shadow:0 3px 0 #BDC3C7;
-    transition:transform 0.1s, box-shadow 0.1s, background 0.2s;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .key:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #BDC3C7;}
-  .key.used-correct{background:#EAFAF1;color:#1E8449;box-shadow:0 3px 0 #1E8449;cursor:default;}
-  .key.used-wrong{background:#FADBD8;color:#C0392B;box-shadow:0 3px 0 #E74C3C;cursor:default;}
-  .key:disabled{opacity:0.5;cursor:default;}
-
-  /* WIN / LOSE overlay */
-  .result-overlay {
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.55);
-    z-index:100;
-    align-items:center;
-    justify-content:center;
-    padding:24px;
-  }
-  .result-overlay.show { display:flex; }
-  .result-card {
-    background:white;
-    border-radius:24px;
-    padding:32px 28px;
-    text-align:center;
-    max-width:320px;
-    width:100%;
-    box-shadow:0 20px 60px rgba(0,0,0,0.3);
-    animation: slide-up 0.3s ease;
-  }
-  @keyframes slide-up {
-    from{transform:translateY(40px);opacity:0;}
-    to{transform:translateY(0);opacity:1;}
-  }
-  .result-emoji { font-size:70px; margin-bottom:8px; }
-  .result-title {
-    font-family:'Fredoka One',cursive;
-    font-size:32px;
-    margin-bottom:6px;
-  }
-  .result-title.win { color:#27AE60; }
-  .result-title.lose { color:#E74C3C; }
-  .result-answer {
-    font-size:14px;
-    color:#7F8C8D;
-    margin-bottom:4px;
-  }
-  .result-answer strong { color:#2C3E50; font-size:16px; }
-  .result-score {
-    font-size:13px;
-    color:#95A5A6;
-    margin-bottom:20px;
-  }
-  .result-btns { display:flex; flex-direction:column; gap:10px; }
-  .play-again-btn {
-    background:linear-gradient(135deg,#FF6B9D,#FF4757);
-    color:white;
-    border:none;
-    border-radius:14px;
-    padding:14px;
-    font-family:'Fredoka One',cursive;
-    font-size:20px;
-    cursor:pointer;
-    box-shadow:0 4px 0 rgba(0,0,0,0.15);
-  }
-  .change-cat-btn {
-    background:#EBF5FB;
-    color:#2C3E50;
-    border:none;
-    border-radius:14px;
-    padding:12px;
-    font-family:'Nunito',sans-serif;
-    font-weight:800;
-    font-size:15px;
-    cursor:pointer;
-  }
-
-  /* Ground decoration */
-  .ground-strip {
-    width:100%;
-    height:8px;
-    background:#388E3C;
-    position:fixed;
-    bottom:0;
-    left:0;
-    z-index:0;
-  }
-
-  /* Responsive */
-  @media(max-height:680px){
-    .kangaroo-svg{width:80px;height:88px;}
-    .kangaroo-area{min-height:95px;}
-    .letter-box{width:25px;height:28px;font-size:15px;}
-    .key{height:38px;font-size:14px;}
-  }
+/* FULL-SCREEN RESULT */
+.res-overlay{display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;padding:20px;}
+.res-overlay.show{display:flex;}
+.res-bg{position:absolute;inset:0;opacity:.97;}
+.res-bg.win-bg{background:radial-gradient(ellipse at center,#27AE60 0%,#1a7a42 100%);}
+.res-bg.lose-bg{background:radial-gradient(ellipse at center,#C0392B 0%,#8e1a1a 100%);}
+.res-card{position:relative;z-index:1;text-align:center;color:#fff;max-width:340px;width:100%;animation:sld .35s cubic-bezier(.22,1,.36,1);}
+@keyframes sld{from{transform:translateY(50px) scale(.9);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+.res-emoji{font-size:90px;margin-bottom:10px;animation:bmp .5s ease .2s both;}
+@keyframes bmp{0%{transform:scale(0);}70%{transform:scale(1.2);}100%{transform:scale(1);}}
+.res-title{font-family:'Fredoka One',cursive;font-size:48px;margin-bottom:8px;text-shadow:0 3px 0 rgba(0,0,0,.2);}
+.res-word{font-size:22px;font-weight:800;background:rgba(255,255,255,.2);border-radius:12px;padding:8px 20px;margin:8px 0;letter-spacing:1px;}
+.res-score{font-size:15px;color:rgba(255,255,255,.85);margin-bottom:24px;}
+.conf{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.cb-p{position:absolute;width:10px;height:10px;border-radius:50%;animation:cfll 1s ease-out both;}
+@keyframes cfll{0%{transform:translateY(-10px) rotate(0deg);opacity:1;}100%{transform:translateY(600px) rotate(720deg);opacity:0;}}
+.res-btns{display:flex;flex-direction:column;gap:10px;max-width:280px;margin:0 auto;}
+.pa-btn{background:#fff;color:#2C3E50;border:none;border-radius:14px;padding:15px;font-family:'Fredoka One',cursive;font-size:21px;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.2);transition:transform .12s,box-shadow .12s;}
+.pa-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.2);}
+.cc-btn{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:14px;padding:12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;cursor:pointer;}
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- HOME SCREEN -->
 <div id="home" class="screen active">
-  <div class="sun-decoration"></div>
-  <div class="cloud cloud-1"></div>
-  <div class="cloud cloud-2"></div>
-  <div class="game-logo">WordHop!</div>
-  <div class="logo-sub">🦘 Guess the word before the kangaroo hops away!</div>
-  <div class="kangaroo-home">🦘</div>
-  <p style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.9);margin-bottom:2px;">Pick a Category or Play All!</p>
-  <div class="category-grid">
-    <button class="cat-btn words" onclick="startGame('words')">
-      <span class="cat-icon">📝</span>
-      <span class="cat-name">Words</span>
-      <span class="cat-count">300 words</span>
-    </button>
-    <button class="cat-btn songs" onclick="startGame('songs')">
-      <span class="cat-icon">🎵</span>
-      <span class="cat-name">Song Titles</span>
-      <span class="cat-count">300 songs</span>
-    </button>
-    <button class="cat-btn countries" onclick="startGame('countries')">
-      <span class="cat-icon">🌍</span>
-      <span class="cat-name">Countries</span>
-      <span class="cat-count">200 countries</span>
-    </button>
-    <button class="cat-btn capitals" onclick="startGame('capitals')">
-      <span class="cat-icon">🏛️</span>
-      <span class="cat-name">Capital Cities</span>
-      <span class="cat-count">200 capitals</span>
-    </button>
-    <button class="cat-btn cars" onclick="startGame('cars')">
-      <span class="cat-icon">🚗</span>
-      <span class="cat-name">Car Brands</span>
-      <span class="cat-count">50+ brands</span>
-    </button>
-    <button class="cat-btn events" onclick="startGame('events')">
-      <span class="cat-icon">📅</span>
-      <span class="cat-name">World Events</span>
-      <span class="cat-count">300 events</span>
-    </button>
-    <button class="cat-btn people" onclick="startGame('people')">
-      <span class="cat-icon">⭐</span>
-      <span class="cat-name">Famous People</span>
-      <span class="cat-count">100 people</span>
-    </button>
-    <button class="cat-btn phrases" onclick="startGame('phrases')">
-      <span class="cat-icon">💬</span>
-      <span class="cat-name">Phrases</span>
-      <span class="cat-count">300 phrases</span>
-    </button>
+  <div class="sun"></div>
+  <div class="cl cl1"></div>
+  <div class="cl cl2"></div>
+  <div class="logo">WordHop!</div>
+  <div class="logo-sub">🦘 Guess the word</div>
+  <div class="kang-home">🦘</div>
+  <p style="font-size:12px;font-weight:700;color:rgba(255,255,255,.9);margin-bottom:2px;">Pick a Category or Play All!</p>
+  <div class="cat-grid">
+    <button class="cb w" onclick="startGame('words')"><span class="ci">📝</span><span class="cn">Words</span><span class="cc">300 words</span></button>
+    <button class="cb s" onclick="startGame('songs')"><span class="ci">🎵</span><span class="cn">Song Titles</span><span class="cc">300 songs</span></button>
+    <button class="cb co" onclick="startGame('countries')"><span class="ci">🌍</span><span class="cn">Countries</span><span class="cc">200 countries</span></button>
+    <button class="cb ca" onclick="startGame('capitals')"><span class="ci">🏛️</span><span class="cn">Capital Cities</span><span class="cc">200 capitals</span></button>
+    <button class="cb cr" onclick="startGame('cars')"><span class="ci">🚗</span><span class="cn">Car Brands</span><span class="cc">50+ brands</span></button>
+    <button class="cb e" onclick="startGame('events')"><span class="ci">📅</span><span class="cn">World Events</span><span class="cc">300 events</span></button>
+    <button class="cb p" onclick="startGame('people')"><span class="ci">⭐</span><span class="cn">Famous People</span><span class="cc">100 people</span></button>
+    <button class="cb ph" onclick="startGame('phrases')"><span class="ci">💬</span><span class="cn">Phrases</span><span class="cc">300 phrases</span></button>
   </div>
-  <button class="start-all-btn" onclick="startGame('all')">🎲 RANDOM MIX!</button>
+  <button class="start-btn" onclick="startGame('all')">🎲 RANDOM MIX!</button>
 </div>
 
-<!-- GAME SCREEN -->
 <div id="game" class="screen">
-  <div class="game-header">
+  <div class="gh">
     <button class="back-btn" onclick="goHome()">← Menu</button>
-    <span class="category-tag" id="cat-tag">Words</span>
+    <span class="cat-tag" id="cat-tag">Words</span>
     <div class="score-area">
-      <div class="score-badge">🏆 <span id="score-display">0</span></div>
-      <div class="score-badge">🔥 <span id="streak-display">0</span></div>
+      <div class="sb">🏆 <span id="score-display">0</span></div>
+      <div class="sb">🔥 <span id="streak-display">0</span></div>
     </div>
   </div>
 
-  <div class="kangaroo-area">
-    <div class="kangaroo-scene">
-      <svg class="kangaroo-svg" id="kang-svg" viewBox="0 0 100 110" xmlns="http://www.w3.org/2000/svg">
-        <!-- Body -->
-        <ellipse cx="50" cy="72" rx="26" ry="22" fill="#C8860A"/>
-        <!-- Head -->
-        <ellipse cx="68" cy="44" rx="18" ry="16" fill="#C8860A"/>
-        <!-- Snout -->
-        <ellipse cx="82" cy="50" rx="9" ry="7" fill="#E0A030"/>
-        <!-- Nose -->
-        <circle cx="88" cy="48" r="3" fill="#5D2E0C"/>
-        <!-- Eye -->
-        <circle cx="75" cy="40" r="3.5" fill="white"/>
-        <circle cx="76" cy="40" r="2" fill="#2C1A0E"/>
-        <circle cx="77" cy="39" r="0.7" fill="white"/>
-        <!-- Ear -->
-        <ellipse cx="60" cy="30" rx="5" ry="10" fill="#C8860A" transform="rotate(-15,60,30)"/>
-        <ellipse cx="60" cy="31" rx="3" ry="7" fill="#E8A04A" transform="rotate(-15,60,31)"/>
-        <!-- Arms -->
-        <path d="M42 65 Q30 70 28 80" stroke="#C8860A" stroke-width="9" stroke-linecap="round" fill="none"/>
-        <path d="M42 65 Q35 58 38 50" stroke="#C8860A" stroke-width="8" stroke-linecap="round" fill="none"/>
-        <!-- Tail -->
-        <path d="M26 80 Q10 90 14 105" stroke="#C8860A" stroke-width="10" stroke-linecap="round" fill="none"/>
-        <!-- Legs -->
-        <path d="M44 90 Q38 100 32 108" stroke="#A06808" stroke-width="9" stroke-linecap="round" fill="none"/>
-        <path d="M54 92 Q52 102 48 109" stroke="#A06808" stroke-width="9" stroke-linecap="round" fill="none"/>
-        <!-- Feet -->
-        <ellipse cx="30" cy="108" rx="9" ry="4" fill="#8B5A00" transform="rotate(-20,30,108)"/>
-        <ellipse cx="47" cy="109" rx="9" ry="4" fill="#8B5A00" transform="rotate(5,47,109)"/>
-        <!-- Joey pouch hint -->
-        <ellipse cx="44" cy="82" rx="10" ry="8" fill="#E09020" opacity="0.5"/>
-        <!-- Pouch baby eyes -->
-        <circle cx="42" cy="81" r="2" fill="#5D2E0C" id="joey-eye" opacity="0"/>
-        <circle cx="47" cy="81" r="2" fill="#5D2E0C" opacity="0"/>
-      </svg>
-      <div class="speech-bubble" id="speech-bubble">Hop hop! Guess me!</div>
-    </div>
+  <div class="lives-bar">
+    <div class="lives-label" id="lives-label">10 lives left</div>
+    <div class="hearts-row" id="hearts-row"></div>
   </div>
 
-  <div class="lives-row" id="lives-row"></div>
-
-  <div class="word-display-area">
+  <div class="word-area">
     <div class="word-row" id="word-row"></div>
   </div>
 
-  <div class="hint-section">
-    <button class="hint-btn" id="hint-btn" onclick="useHint()">
-      💡 Use Hint <span id="hints-left">(3 left)</span>
-    </button>
-    <div class="hint-text" id="hint-text" style="display:none;"></div>
+  <div class="hint-sec">
+    <button class="hint-btn" id="hint-btn" onclick="useHint()">💡 Hint <span id="hints-left">(10 left)</span></button>
+    <div class="hint-txt" id="hint-text" style="display:none;"></div>
   </div>
 
-  <div class="wrong-letters-area" id="wrong-letters"></div>
-
-  <div class="keyboard-area" id="keyboard-area"></div>
+  <div class="wrong-area" id="wrong-letters"></div>
+  <div class="kb-area" id="keyboard-area"></div>
 </div>
 
-<!-- Result Overlay -->
-<div class="result-overlay" id="result-overlay">
-  <div class="result-card">
-    <div class="result-emoji" id="result-emoji">🎉</div>
-    <div class="result-title" id="result-title">You Won!</div>
-    <div class="result-answer" id="result-answer"></div>
-    <div class="result-score" id="result-score"></div>
-    <div class="result-btns">
-      <button class="play-again-btn" onclick="playAgain()">▶ Play Again!</button>
-      <button class="change-cat-btn" onclick="goHome()">← Change Category</button>
+<div class="res-overlay" id="result-overlay">
+  <div class="res-bg" id="res-bg"></div>
+  <div class="conf" id="confetti"></div>
+  <div class="res-card">
+    <div class="res-emoji" id="res-emoji">🎉</div>
+    <div class="res-title" id="res-title">You Got It!</div>
+    <div class="res-word" id="res-word"></div>
+    <div class="res-score" id="res-score"></div>
+    <div class="res-btns">
+      <button class="pa-btn" onclick="playAgain()">▶ Play Again!</button>
+      <button class="cc-btn" onclick="goHome()">← Change Category</button>
     </div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// WORD DATABASE
-// ============================================================
-const DB = {
-  words: {
-    label:"Words",
-    hint_label:"This word means:",
-    items:[
-      {w:"ADVENTURE",h:"An exciting journey or experience"},
-      {w:"BALLOON",h:"A colorful inflatable object"},
-      {w:"BUTTERFLY",h:"A colorful flying insect"},
-      {w:"CALENDAR",h:"Shows all the days of the year"},
-      {w:"DIAMOND",h:"A very precious gemstone"},
-      {w:"ELEPHANT",h:"The largest land animal"},
-      {w:"FANTASY",h:"An imaginary or magical world"},
-      {w:"GIRAFFE",h:"The tallest animal with a long neck"},
-      {w:"HARMONY",h:"When things work well together"},
-      {w:"INVENTOR",h:"Someone who creates new things"},
-      {w:"JUNGLE",h:"A dense tropical forest"},
-      {w:"KANGAROO",h:"An Australian marsupial that hops"},
-      {w:"LANTERN",h:"A portable light source"},
-      {w:"MOUNTAIN",h:"A very large hill made of rock"},
-      {w:"NOTEBOOK",h:"A book with blank pages for writing"},
-      {w:"OBSTACLE",h:"Something that gets in your way"},
-      {w:"PENGUIN",h:"A flightless bird from Antarctica"},
-      {w:"QUESTION",h:"Something you ask to get information"},
-      {w:"RAINBOW",h:"Colorful arc that appears after rain"},
-      {w:"SANDWICH",h:"Food between two slices of bread"},
-      {w:"TELESCOPE",h:"A tool to see faraway objects"},
-      {w:"UMBRELLA",h:"Keeps you dry when it rains"},
-      {w:"VOLCANO",h:"A mountain that can erupt with lava"},
-      {w:"WATERFALL",h:"Water falling from a great height"},
-      {w:"XYLOPHONE",h:"A musical instrument you hit with mallets"},
-      {w:"YESTERDAY",h:"The day before today"},
-      {w:"ZEBRA",h:"A black and white striped animal"},
-      {w:"ASTRONAUT",h:"A person who travels to space"},
-      {w:"BLIZZARD",h:"A very heavy snowstorm"},
-      {w:"CHOCOLATE",h:"A sweet brown food made from cocoa"},
-      {w:"DINOSAUR",h:"An ancient extinct reptile"},
-      {w:"ENORMOUS",h:"Extremely large in size"},
-      {w:"FLAMINGO",h:"A pink bird that stands on one leg"},
-      {w:"GLACIER",h:"A large slow-moving mass of ice"},
-      {w:"HURRICANE",h:"An extremely powerful tropical storm"},
-      {w:"IGLOO",h:"A dome-shaped house made of snow"},
-      {w:"JELLYFISH",h:"A soft sea creature with tentacles"},
-      {w:"KINGDOM",h:"A land ruled by a king or queen"},
-      {w:"LABYRINTH",h:"A complex maze"},
-      {w:"MERMAID",h:"A mythical half-human, half-fish being"},
-      {w:"NOCTURNAL",h:"Active during the night"},
-      {w:"OLYMPICS",h:"The biggest international sports event"},
-      {w:"PYRAMID",h:"A structure with a square base and pointed top"},
-      {w:"QUICKSAND",h:"Loose wet sand that things sink into"},
-      {w:"REPTILE",h:"Cold-blooded scaly animal like a snake"},
-      {w:"SKELETON",h:"The bony framework inside a body"},
-      {w:"TORNADO",h:"A fast-spinning column of air"},
-      {w:"UNIVERSE",h:"All of space and everything in it"},
-      {w:"VICTORY",h:"Winning a competition or battle"},
-      {w:"WEREWOLF",h:"A mythical creature: half man, half wolf"},
-      {w:"XENON",h:"A rare chemical element used in lights"},
-      {w:"YONDER",h:"Far away in the distance"},
-      {w:"ZODIAC",h:"A band of 12 star constellations"},
-      {w:"ARCHITECT",h:"A person who designs buildings"},
-      {w:"BACTERIA",h:"Tiny single-celled microorganisms"},
-      {w:"CAMOUFLAGE",h:"When an animal blends into its surroundings"},
-      {w:"DEMOCRACY",h:"A system of government by the people"},
-      {w:"ECOSYSTEM",h:"A community of living things and their environment"},
-      {w:"FESTIVAL",h:"A special celebration or event"},
-      {w:"GRAVITY",h:"The force that pulls things down to Earth"},
-      {w:"HORIZON",h:"Where the sky meets the land or sea"},
-      {w:"ILLUSION",h:"Something that tricks your eyes or mind"},
-      {w:"JOURNEY",h:"A long trip from one place to another"},
-      {w:"KALEIDOSCOPE",h:"A tube with mirrors that makes colorful patterns"},
-      {w:"LIGHTNING",h:"A bright flash of electricity in the sky"},
-      {w:"MARATHON",h:"A 26-mile foot race"},
-      {w:"NAVIGATE",h:"To find your way from place to place"},
-      {w:"ORCHESTRA",h:"A large group of musicians playing together"},
-      {w:"PARADISE",h:"A perfect or ideal place"},
-      {w:"QUARANTINE",h:"Isolation to prevent spreading disease"},
-      {w:"RHYTHM",h:"A regular pattern of beats in music"},
-      {w:"SATELLITE",h:"An object that orbits a planet"},
-      {w:"TRADITION",h:"A custom passed down through generations"},
-      {w:"UNICORN",h:"A mythical horse with a horn"},
-      {w:"VILLAIN",h:"The bad character in a story"},
-      {w:"WILDERNESS",h:"A wild, natural area with no people"},
-      {w:"YACHT",h:"A large, fancy sailing boat"},
-      {w:"ZEPPELIN",h:"A large airship shaped like a cigar"},
-      {w:"ACCELERATE",h:"To move faster and faster"},
-      {w:"BUMBLEBEE",h:"A large fuzzy black and yellow bee"},
-      {w:"CONTINENT",h:"One of the seven great land masses on Earth"},
-      {w:"DAFFODIL",h:"A bright yellow spring flower"},
-      {w:"EDUCATION",h:"The process of learning and teaching"},
-      {w:"FOUNTAIN",h:"A structure that shoots water into the air"},
-      {w:"HIBERNATION",h:"When animals sleep through winter"},
-      {w:"IMAGINATION",h:"The ability to form new ideas in your mind"},
-      {w:"JOURNALIST",h:"A person who writes news stories"},
-      {w:"KILOMETER",h:"A unit of distance equal to 1000 meters"},
-      {w:"LABRADOR",h:"A popular friendly breed of dog"},
-      {w:"MICROSCOPE",h:"A tool to see very tiny things"},
-      {w:"NEBULA",h:"A cloud of gas and dust in outer space"},
-      {w:"OPTIMISTIC",h:"Expecting the best outcomes"},
-      {w:"PHOTOSYNTHESIS",h:"How plants make food from sunlight"},
-      {w:"QUICKSILVER",h:"Another name for the liquid metal mercury"},
-      {w:"REVOLUTION",h:"A big, dramatic change in a system"},
-      {w:"SUBMARINE",h:"A watercraft that travels underwater"},
-      {w:"THUNDERSTORM",h:"A storm with thunder and lightning"},
-      {w:"UTOPIA",h:"An imaginary perfect society"},
-      {w:"VEGETARIAN",h:"A person who does not eat meat"},
-      {w:"WORKSHOP",h:"A room where things are made or repaired"},
-      {w:"EXPEDITION",h:"A journey for a specific purpose"},
-      {w:"FOSSIL",h:"The preserved remains of an ancient organism"},
-      {w:"GLACIER",h:"A large slow-moving river of ice"},
-      {w:"HABITAT",h:"The natural home of an animal or plant"},
-      {w:"INNOVATION",h:"A new idea or method"},
-      {w:"JIGSAW",h:"A puzzle made of interlocking pieces"},
-      {w:"KNAPSACK",h:"A bag worn on the back"},
-      {w:"LANYARD",h:"A cord worn around the neck to hold things"},
-      {w:"MIRAGE",h:"An optical illusion caused by heat"},
-      {w:"NOMAD",h:"A person who moves from place to place"},
-      {w:"OASIS",h:"A fertile spot in a desert with water"},
-      {w:"PARACHUTE",h:"A device that slows a fall from the sky"},
-      {w:"QUARTZ",h:"A common crystal mineral"},
-      {w:"RESERVOIR",h:"A large lake used to store water"},
-      {w:"STAMPEDE",h:"A sudden rush of a large crowd or herd"},
-      {w:"TYPHOON",h:"A tropical storm in the Pacific Ocean"},
-      {w:"VORTEX",h:"A whirling mass of water or air"},
-      {w:"WHIRLPOOL",h:"Water spinning rapidly in a circle"},
-      {w:"YEARBOOK",h:"A book recording a school year"},
-      {w:"ZOOKEEPER",h:"A person who cares for zoo animals"},
-      {w:"AQUARIUM",h:"A tank where fish and sea life are kept"},
-      {w:"BINOCULARS",h:"A device to see distant objects clearly"},
-      {w:"CEREMONY",h:"A formal public or religious event"},
-      {w:"DETECTIVE",h:"A person who investigates crimes"},
-      {w:"ENVELOPE",h:"A paper container for a letter"},
-      {w:"FIREWORKS",h:"Explosive devices that make colorful displays"},
-      {w:"GEOGRAPHY",h:"The study of Earth's lands and features"},
-      {w:"HEMISPHERE",h:"Half of the Earth"},
-      {w:"INVISIBLE",h:"Cannot be seen"},
-      {w:"JACKHAMMER",h:"A powerful drilling tool"},
-      {w:"KAYAK",h:"A small narrow boat paddled by one person"},
-      {w:"LOCOMOTIVE",h:"An engine that pulls a train"},
-      {w:"MYTHOLOGY",h:"Traditional stories about gods and heroes"},
-      {w:"NIGHTINGALE",h:"A small bird known for its beautiful song"},
-      {w:"OVERTURE",h:"The opening music of an opera or play"},
-      {w:"PORCUPINE",h:"A spiny animal like a large hedgehog"},
-      {w:"QUICKSTEP",h:"A lively ballroom dance"},
-      {w:"RHINOCEROS",h:"A large animal with a horn on its nose"},
-      {w:"STETHOSCOPE",h:"A doctor's tool for listening to heartbeats"},
-      {w:"TURBINE",h:"A machine powered by flowing water or gas"},
-      {w:"UNDERTOW",h:"A hidden current pulling swimmers underwater"},
-      {w:"VENOMOUS",h:"Producing poison that can harm others"},
-      {w:"WINDMILL",h:"A structure that uses wind to do work"},
-      {w:"XENOPHOBIA",h:"Fear or hatred of strangers or foreigners"},
-      {w:"YELLOWSTONE",h:"A famous national park with geysers"},
-      {w:"ZIGZAG",h:"A pattern with sharp turns back and forth"},
-      {w:"ARCHIPELAGO",h:"A group of islands"},
-      {w:"BIOGRAPHY",h:"A written story of someone's life"},
-      {w:"CALLIGRAPHY",h:"The art of beautiful handwriting"},
-      {w:"DRAGONFLY",h:"An insect with large wings near water"},
-      {w:"EVAPORATION",h:"Water turning into vapor"},
-      {w:"FLUORESCENT",h:"Emitting bright light"},
-      {w:"GREENHOUSE",h:"A glass building for growing plants"},
-      {w:"HEMISPHERE",h:"Half of the Earth or a sphere"},
-      {w:"ICICLE",h:"A pointed spike of ice hanging down"},
-      {w:"JAVELIN",h:"A long spear thrown in athletics"},
-      {w:"KARATE",h:"A Japanese martial art"},
-      {w:"LAGOON",h:"A shallow body of water by the sea"},
-      {w:"MANGROVE",h:"A tropical tree that grows in shallow water"},
-      {w:"NARWHAL",h:"A whale with a long spiral tusk"},
-      {w:"OBSERVATORY",h:"A building for watching the stars"},
-      {w:"PLANKTON",h:"Tiny organisms drifting in the sea"},
-      {w:"QUICKSAND",h:"Sand mixed with water that things sink into"},
-      {w:"REDWOOD",h:"The tallest type of tree in the world"},
-      {w:"SAVANNA",h:"A flat grassland in a warm climate"},
-      {w:"TSUNAMI",h:"A massive wave caused by an undersea earthquake"},
-      {w:"ULTRAVIOLET",h:"Light beyond the visible spectrum"},
-      {w:"VERTEBRATE",h:"An animal with a backbone"},
-      {w:"WALRUS",h:"A large sea mammal with tusks"},
-      {w:"XYLEM",h:"The part of a plant that carries water"},
-      {w:"YOLK",h:"The yellow part inside an egg"},
-      {w:"ZEAL",h:"Great energy and enthusiasm"},
-      {w:"AMBER",h:"A golden-yellow fossil resin"},
-      {w:"BONFIRE",h:"A large outdoor fire"},
-      {w:"COBBLESTONE",h:"Small rounded stones used to pave roads"},
-      {w:"DUSK",h:"The time just after sunset"},
-      {w:"ECLIPSE",h:"When one space body blocks the light of another"},
-      {w:"FLINT",h:"A hard rock used to make fire"},
-      {w:"GOBLIN",h:"A small mischievous mythical creature"},
-      {w:"HAMSTER",h:"A small furry pet that runs in wheels"},
-      {w:"INKWELL",h:"A small container for dipping a pen in ink"},
-      {w:"JAVANESE",h:"Relating to the island of Java"},
-      {w:"KIPPER",h:"A smoked herring fish"},
-      {w:"LOCKET",h:"A small ornamental case worn on a necklace"},
-      {w:"MINSTREL",h:"A medieval traveling musician"},
-      {w:"NUGGET",h:"A small lump of gold or other material"},
-      {w:"OCELOT",h:"A wild spotted cat from the Americas"},
-      {w:"PLATYPUS",h:"An Australian mammal that lays eggs"},
-      {w:"QUILL",h:"A large feather used as a writing pen"},
-      {w:"RAVEN",h:"A large black bird known for its intelligence"},
-      {w:"STALAGMITE",h:"A rock formation growing up from a cave floor"},
-      {w:"TUNDRA",h:"A flat, treeless arctic landscape"},
-      {w:"URCHIN",h:"A small spiny sea creature"},
-      {w:"VELVET",h:"A soft, smooth fabric"},
-      {w:"WEASEL",h:"A small slender furry animal"},
-      {w:"YETI",h:"A legendary ape-like creature of the Himalayas"},
-      {w:"ZENITH",h:"The highest point in the sky"},
-      {w:"ANCHOR",h:"A heavy object dropped to stop a boat"},
-      {w:"BAYOU",h:"A slow-moving body of water in the South USA"},
-      {w:"CIPHER",h:"A secret code or coded message"},
-      {w:"DAGGER",h:"A short knife used as a weapon"},
-      {w:"ENIGMA",h:"Something mysterious and hard to understand"},
-      {w:"FJORD",h:"A narrow inlet between steep cliffs"},
-      {w:"GOLEM",h:"A creature made of clay in Jewish folklore"},
-      {w:"HERALD",h:"A person who makes official announcements"},
-      {w:"ICON",h:"A symbol or very famous person"},
-      {w:"JOUST",h:"A combat between two knights on horseback"},
-      {w:"KRAKEN",h:"A mythical giant sea monster"},
-      {w:"LAVA",h:"Molten rock erupting from a volcano"},
-      {w:"MAMMOTH",h:"An extinct elephant-like creature with tusks"},
-      {w:"NEON",h:"A bright glowing gas used in signs"},
-      {w:"ORACLE",h:"A person seen as giving wise advice"},
-      {w:"PRISM",h:"A glass shape that splits light into colors"},
-      {w:"QUASAR",h:"An extremely bright object in space"},
-      {w:"RUNE",h:"A letter in an ancient alphabet"},
-      {w:"SPHINX",h:"A mythical creature with a human head and lion body"},
-      {w:"TOTEM",h:"A sacred symbol carved from wood"},
-      {w:"UTENSIL",h:"A tool used for cooking or eating"},
-      {w:"VAPOR",h:"A substance in the form of a gas"},
-      {w:"WIZARD",h:"A person who practises magic"},
-    ]
-  },
-  songs: {
-    label:"Song Titles",
-    hint_label:"Song hint:",
-    items:[
-      {w:"SHAPE OF YOU",h:"Ed Sheeran's biggest hit, about dancing and attraction"},
-      {w:"HAPPY",h:"Pharrell Williams song used in Despicable Me 2"},
-      {w:"BOHEMIAN RHAPSODY",h:"Queen's epic rock opera from 1975"},
-      {w:"LET IT GO",h:"Famous song from Disney's Frozen"},
-      {w:"THRILLER",h:"Michael Jackson's Halloween classic"},
-      {w:"IMAGINE",h:"John Lennon's song about a world of peace"},
-      {w:"ROLLING IN THE DEEP",h:"Adele's powerful breakup anthem"},
-      {w:"HELLO",h:"Adele's famous song starting with that greeting"},
-      {w:"BLINDING LIGHTS",h:"The Weeknd's 80s-inspired pop hit"},
-      {w:"UPTOWN FUNK",h:"Bruno Mars and Mark Ronson's funky hit"},
-      {w:"SOMEONE LIKE YOU",h:"Adele's heartbreak piano ballad"},
-      {w:"BELIEVER",h:"Imagine Dragons song about rising from pain"},
-      {w:"COUNTING STARS",h:"OneRepublic's song about chasing dreams"},
-      {w:"STAY WITH ME",h:"Sam Smith's soulful debut single"},
-      {w:"PHOTOGRAPH",h:"Ed Sheeran's nostalgic love song"},
-      {w:"SEE YOU AGAIN",h:"Wiz Khalifa's tribute from Fast and Furious 7"},
-      {w:"DESPACITO",h:"Luis Fonsi's massive Spanish-language hit"},
-      {w:"OLD TOWN ROAD",h:"Lil Nas X's country-rap crossover smash"},
-      {w:"SHALLOW",h:"Lady Gaga and Bradley Cooper's Oscar-winning duet"},
-      {w:"BAD GUY",h:"Billie Eilish's whispery debut hit"},
-      {w:"DANCE MONKEY",h:"Tones and I's viral Australian pop hit"},
-      {w:"WATERMELON SUGAR",h:"Harry Styles' summer love song"},
-      {w:"LEVITATING",h:"Dua Lipa's disco-pop banger"},
-      {w:"DYNAMITE",h:"BTS's first all-English pop track"},
-      {w:"DRIVERS LICENSE",h:"Olivia Rodrigo's heartbreak debut"},
-      {w:"GOOD 4 U",h:"Olivia Rodrigo's pop-punk breakup track"},
-      {w:"STAY",h:"The Kid LAROI and Justin Bieber's massive 2021 hit"},
-      {w:"HEAT WAVES",h:"Glass Animals' breakthrough indie hit"},
-      {w:"AS IT WAS",h:"Harry Styles' solo debut album lead single"},
-      {w:"ANTI HERO",h:"Taylor Swift's introspective Midnights single"},
-      {w:"FLOWERS",h:"Miley Cyrus's empowering self-love anthem"},
-      {w:"CRUEL SUMMER",h:"Taylor Swift's pop banger from Lover"},
-      {w:"NIGHT CHANGES",h:"One Direction's bittersweet pop ballad"},
-      {w:"PERFECT",h:"Ed Sheeran's popular wedding song"},
-      {w:"SUGAR",h:"Maroon 5's sweet pop love song"},
-      {w:"CANT STOP THE FEELING",h:"Justin Timberlake's Trolls movie song"},
-      {w:"ROAR",h:"Katy Perry's empowering anthem"},
-      {w:"FIREWORK",h:"Katy Perry's inspirational song"},
-      {w:"TEENAGE DREAM",h:"Katy Perry's bubblegum pop hit"},
-      {w:"PARTY IN THE USA",h:"Miley Cyrus's patriotic pop song"},
-      {w:"WRECKING BALL",h:"Miley Cyrus's dramatic breakup song"},
-      {w:"SHAKE IT OFF",h:"Taylor Swift's carefree anthem about ignoring haters"},
-      {w:"BLANK SPACE",h:"Taylor Swift's satirical pop song about romance"},
-      {w:"LOVE STORY",h:"Taylor Swift's Romeo and Juliet inspired song"},
-      {w:"YOU BELONG WITH ME",h:"Taylor Swift's song about loving a best friend"},
-      {w:"BABY",h:"Justin Bieber's debut hit featuring Ludacris"},
-      {w:"SORRY",h:"Justin Bieber's apology anthem"},
-      {w:"WHAT DO YOU MEAN",h:"Justin Bieber's questioning pop track"},
-      {w:"INTENTIONS",h:"Justin Bieber and Quavo's love song"},
-      {w:"PEACHES",h:"Justin Bieber's smooth summer jam"},
-      {w:"SWEET CHILD O MINE",h:"Guns N Roses' classic rock love song"},
-      {w:"HOTEL CALIFORNIA",h:"Eagles' mysterious classic rock anthem"},
-      {w:"STAIRWAY TO HEAVEN",h:"Led Zeppelin's epic rock masterpiece"},
-      {w:"PURPLE HAZE",h:"Jimi Hendrix's psychedelic rock classic"},
-      {w:"SMELLS LIKE TEEN SPIRIT",h:"Nirvana's grunge anthem from 1991"},
-      {w:"YESTERDAY",h:"The Beatles' most covered song ever"},
-      {w:"LET IT BE",h:"The Beatles' soothing farewell song"},
-      {w:"HEY JUDE",h:"The Beatles' uplifting singalong classic"},
-      {w:"BORN TO RUN",h:"Bruce Springsteen's blue-collar rock anthem"},
-      {w:"JOHNNY B GOODE",h:"Chuck Berry's classic early rock song"},
-      {w:"RESPECT",h:"Aretha Franklin's powerful soul classic"},
-      {w:"WHAT'S GOING ON",h:"Marvin Gaye's soulful social commentary"},
-      {w:"SUPERSTITION",h:"Stevie Wonder's funky classic hit"},
-      {w:"MY GENERATION",h:"The Who's anthem for young people"},
-      {w:"SATISFACTION",h:"The Rolling Stones' most famous riff"},
-      {w:"JUMP",h:"Van Halen's keyboard-driven rock hit"},
-      {w:"EYE OF THE TIGER",h:"Survivor's famous Rocky movie theme"},
-      {w:"DONT STOP BELIEVIN",h:"Journey's iconic arena rock anthem"},
-      {w:"TAKE ON ME",h:"A-ha's synth-pop hit with animated video"},
-      {w:"SWEET DREAMS",h:"Eurythmics' 80s synth classic"},
-      {w:"BILLIE JEAN",h:"Michael Jackson's song about a false paternity claim"},
-      {w:"BEAT IT",h:"Michael Jackson's rock-infused pop track"},
-      {w:"MAN IN THE MIRROR",h:"Michael Jackson's song about personal change"},
-      {w:"WE ARE THE WORLD",h:"Charity supergroup song to help Africa"},
-      {w:"AFRICA",h:"Toto's beloved 80s song about the continent"},
-      {w:"COME AS YOU ARE",h:"Nirvana's grunge invitation to be yourself"},
-      {w:"WONDERWALL",h:"Oasis's most famous Britpop song"},
-      {w:"CHAMPAGNE SUPERNOVA",h:"Oasis's epic slow-building rock anthem"},
-      {w:"BITTER SWEET SYMPHONY",h:"The Verve's orchestral Britpop hit"},
-      {w:"CREEP",h:"Radiohead's song about feeling like an outsider"},
-      {w:"LOSING MY RELIGION",h:"R.E.M.'s mandolin-driven alternative hit"},
-      {w:"LOSING IT",h:"Fisher's legendary techno dance anthem"},
-      {w:"ONE MORE TIME",h:"Daft Punk's electronic dance classic"},
-      {w:"GET LUCKY",h:"Daft Punk and Pharrell's disco-funk hit"},
-      {w:"AROUND THE WORLD",h:"Daft Punk's repetitive techno classic"},
-      {w:"CHANDELIER",h:"Sia's high-note showcase pop anthem"},
-      {w:"TITANIUM",h:"David Guetta and Sia's uplifting house hit"},
-      {w:"CHEAP THRILLS",h:"Sia's song about dancing for free"},
-      {w:"ELASTIC HEART",h:"Sia's emotional battle-themed song"},
-      {w:"RADIOACTIVE",h:"Imagine Dragons' dystopian rock hit"},
-      {w:"DEMONS",h:"Imagine Dragons' song about inner darkness"},
-      {w:"THUNDER",h:"Imagine Dragons' anthem about defying expectations"},
-      {w:"NATURAL",h:"Imagine Dragons' survival anthem"},
-      {w:"ENEMY",h:"Imagine Dragons and Arcane's collaboration track"},
-      {w:"BIRDS OF A FEATHER",h:"Billie Eilish's romantic Happier Than Ever track"},
-      {w:"OCEAN EYES",h:"Billie Eilish's dreamy debut song"},
-      {w:"THEREFORE I AM",h:"Billie Eilish's confident self-assured hit"},
-      {w:"LOVELY",h:"Billie Eilish and Khalid's haunting duet"},
-      {w:"SENORITA",h:"Shawn Mendes and Camila Cabello's summer romance"},
-      {w:"STITCHES",h:"Shawn Mendes's breakup metaphor song"},
-      {w:"MERCY",h:"Shawn Mendes's plea to a cold lover"},
-      {w:"HAVANA",h:"Camila Cabello's Cuban-inspired pop hit"},
-      {w:"NEVER BE THE SAME",h:"Camila Cabello's love song about addiction"},
-      {w:"BORN THIS WAY",h:"Lady Gaga's LGBTQ anthem"},
-      {w:"JUST DANCE",h:"Lady Gaga's carefree debut hit"},
-      {w:"POKER FACE",h:"Lady Gaga's iconic debut about hiding emotions"},
-      {w:"BAD ROMANCE",h:"Lady Gaga's theatrical love-and-obsession song"},
-      {w:"TELEPHONE",h:"Lady Gaga and Beyonce's girl power duet"},
-      {w:"CRAZY IN LOVE",h:"Beyonce's iconic love song featuring Jay-Z"},
-      {w:"SINGLE LADIES",h:"Beyonce's empowering anthem for independent women"},
-      {w:"LEMONADE",h:"Beyonce's visual album and song about betrayal"},
-      {w:"HALO",h:"Beyonce's angelic love ballad"},
-      {w:"FORMATION",h:"Beyonce's culturally charged empowerment anthem"},
-      {w:"GODS PLAN",h:"Drake's song about giving back to his community"},
-      {w:"HOTLINE BLING",h:"Drake's song about an ex who still calls"},
-      {w:"IN MY FEELINGS",h:"Drake's viral song that started the Kiki challenge"},
-      {w:"PASSIONFRUIT",h:"Drake's smooth dancehall-influenced track"},
-      {w:"ONE DANCE",h:"Drake's Afrobeats-influenced pop hit"},
-      {w:"SUNFLOWER",h:"Post Malone and Swae Lee's Spider-Man song"},
-      {w:"ROCKSTAR",h:"Post Malone's braggadocious hip-hop hit"},
-      {w:"CONGRATULATIONS",h:"Post Malone's reflective success song"},
-      {w:"CIRCLES",h:"Post Malone's breakup loop of emotions"},
-      {w:"PSYCHO",h:"Post Malone and Ty Dolla Sign's dark pop hit"},
-      {w:"MONTERO",h:"Lil Nas X's controversial biblical-themed song"},
-      {w:"INDUSTRY BABY",h:"Lil Nas X and Jack Harlow's confident hit"},
-      {w:"THAT GIRL",h:"Olly Murs's upbeat love song"},
-      {w:"ADORN",h:"Miguel's smooth R&B love song"},
-      {w:"LOVE ON TOP",h:"Beyonce's high-key celebration of love"},
-      {w:"ROLLING STONE",h:"Bob Dylan's epic folk-rock classic"},
-      {w:"PURPLE RAIN",h:"Prince's emotional masterpiece and film title"},
-      {w:"LITTLE RED CORVETTE",h:"Prince's song using a car as a metaphor"},
-      {w:"SIGN OF THE TIMES",h:"Harry Styles' dramatic debut solo single"},
-      {w:"GOLDEN",h:"Harry Styles' bright and optimistic pop song"},
-      {w:"ADORE YOU",h:"Harry Styles' devoted love song"},
-      {w:"FALLING",h:"Harry Styles' heartbreaking piano ballad"},
-      {w:"MATILDA",h:"Harry Styles' emotional tribute to someone from a hard childhood"},
-    ]
-  },
-  countries: {
-    label:"Countries",
-    hint_label:"Country hint:",
-    items:[
-      {w:"AFGHANISTAN",h:"A landlocked country in Central Asia"},
-      {w:"ALBANIA",h:"A small Balkan country on the Adriatic Sea"},
-      {w:"ALGERIA",h:"The largest country in Africa by area"},
-      {w:"ANDORRA",h:"A tiny country nestled between France and Spain"},
-      {w:"ANGOLA",h:"An oil-rich country in Southern Africa"},
-      {w:"ARGENTINA",h:"Famous for tango and Patagonia in South America"},
-      {w:"ARMENIA",h:"A small mountainous country in the Caucasus"},
-      {w:"AUSTRALIA",h:"The world's largest island and a continent"},
-      {w:"AUSTRIA",h:"A landlocked Alpine country in Central Europe"},
-      {w:"AZERBAIJAN",h:"A country at the crossroads of Europe and Asia"},
-      {w:"BAHAMAS",h:"An island nation in the Caribbean known for its beaches"},
-      {w:"BAHRAIN",h:"A small island kingdom in the Persian Gulf"},
-      {w:"BANGLADESH",h:"A densely populated country in South Asia"},
-      {w:"BARBADOS",h:"An eastern Caribbean island known for cricket"},
-      {w:"BELARUS",h:"A landlocked country in Eastern Europe"},
-      {w:"BELGIUM",h:"A country in Europe known for chocolate and waffles"},
-      {w:"BELIZE",h:"A Central American country on the Caribbean coast"},
-      {w:"BENIN",h:"A West African country formerly known as Dahomey"},
-      {w:"BHUTAN",h:"A Himalayan kingdom known as the Land of the Thunder Dragon"},
-      {w:"BOLIVIA",h:"A landlocked South American country with the world's highest capital"},
-      {w:"BOTSWANA",h:"A landlocked country in southern Africa known for diamonds"},
-      {w:"BRAZIL",h:"The largest country in South America, famous for the Amazon"},
-      {w:"BRUNEI",h:"A small oil-rich sultanate in Southeast Asia"},
-      {w:"BULGARIA",h:"A Balkan country on the Black Sea coast"},
-      {w:"BURKINA FASO",h:"A landlocked West African nation"},
-      {w:"CAMBODIA",h:"Home to the ancient temple complex Angkor Wat"},
-      {w:"CAMEROON",h:"A West African country known as Africa in miniature"},
-      {w:"CANADA",h:"The world's second largest country by area"},
-      {w:"CHAD",h:"A landlocked country in Central Africa"},
-      {w:"CHILE",h:"A long, narrow country along South America's west coast"},
-      {w:"CHINA",h:"The world's most populous country"},
-      {w:"COLOMBIA",h:"A South American country known for coffee"},
-      {w:"COSTA RICA",h:"A Central American nation known for biodiversity"},
-      {w:"CROATIA",h:"A European country along the Adriatic coast"},
-      {w:"CUBA",h:"A Caribbean island nation with classic cars and cigars"},
-      {w:"CYPRUS",h:"A Mediterranean island country south of Turkey"},
-      {w:"DENMARK",h:"A Scandinavian country, home of LEGO"},
-      {w:"ECUADOR",h:"A South American country on the equator"},
-      {w:"EGYPT",h:"The land of pyramids and pharaohs in North Africa"},
-      {w:"ETHIOPIA",h:"The oldest independent country in Africa"},
-      {w:"FIJI",h:"An island nation in the South Pacific Ocean"},
-      {w:"FINLAND",h:"A Nordic country known as the home of Santa Claus"},
-      {w:"FRANCE",h:"The most visited country in the world with the Eiffel Tower"},
-      {w:"GERMANY",h:"A central European country known for engineering and cars"},
-      {w:"GHANA",h:"A West African country known for cacao"},
-      {w:"GREECE",h:"The birthplace of democracy and the Olympics"},
-      {w:"GUATEMALA",h:"A Central American country with Mayan ruins"},
-      {w:"HAITI",h:"The first Caribbean country to gain independence"},
-      {w:"HONDURAS",h:"A Central American country with Caribbean and Pacific coasts"},
-      {w:"HUNGARY",h:"A landlocked Central European nation"},
-      {w:"ICELAND",h:"An island nation known for volcanoes and the Northern Lights"},
-      {w:"INDIA",h:"The world's most populous democracy with the Taj Mahal"},
-      {w:"INDONESIA",h:"An archipelago country with the most islands in the world"},
-      {w:"IRAN",h:"A Middle Eastern country also known as Persia"},
-      {w:"IRAQ",h:"A Middle Eastern country between the Tigris and Euphrates"},
-      {w:"IRELAND",h:"An island country in Northern Europe known for shamrocks"},
-      {w:"ISRAEL",h:"A Middle Eastern country with religious sites for three faiths"},
-      {w:"ITALY",h:"A boot-shaped country known for pizza, pasta, and art"},
-      {w:"JAMAICA",h:"A Caribbean island famous for reggae music"},
-      {w:"JAPAN",h:"An island nation in East Asia known for technology and sushi"},
-      {w:"JORDAN",h:"A Middle Eastern country home to Petra"},
-      {w:"KAZAKHSTAN",h:"The world's largest landlocked country"},
-      {w:"KENYA",h:"An East African country famous for its wildlife safaris"},
-      {w:"KUWAIT",h:"A small but wealthy oil-rich Gulf country"},
-      {w:"KYRGYZSTAN",h:"A Central Asian mountainous country"},
-      {w:"LAOS",h:"A landlocked country in Southeast Asia"},
-      {w:"LATVIA",h:"A Baltic state in Northern Europe"},
-      {w:"LEBANON",h:"A small Middle Eastern country known for its cuisine"},
-      {w:"LIBERIA",h:"A West African country founded by freed American slaves"},
-      {w:"LIBYA",h:"A North African country with a large oil reserve"},
-      {w:"LIECHTENSTEIN",h:"A tiny Central European country between Switzerland and Austria"},
-      {w:"LITHUANIA",h:"A Baltic state in Northeastern Europe"},
-      {w:"LUXEMBOURG",h:"A tiny wealthy country in Western Europe"},
-      {w:"MADAGASCAR",h:"A large island off the coast of East Africa"},
-      {w:"MALAYSIA",h:"A Southeast Asian country known for its rainforests"},
-      {w:"MALDIVES",h:"A low-lying island nation in the Indian Ocean"},
-      {w:"MALI",h:"A landlocked West African country with ancient cities"},
-      {w:"MALTA",h:"A small Mediterranean island country"},
-      {w:"MAURITIUS",h:"A tropical island nation in the Indian Ocean"},
-      {w:"MEXICO",h:"A North American country known for tacos and mariachi"},
-      {w:"MOLDOVA",h:"A small landlocked Eastern European country"},
-      {w:"MONACO",h:"The world's second smallest country on the French Riviera"},
-      {w:"MONGOLIA",h:"A vast landlocked country known for Genghis Khan"},
-      {w:"MONTENEGRO",h:"A small Balkan country on the Adriatic Sea"},
-      {w:"MOROCCO",h:"A North African country across from Spain"},
-      {w:"MOZAMBIQUE",h:"An East African country on the Indian Ocean"},
-      {w:"MYANMAR",h:"A Southeast Asian country formerly known as Burma"},
-      {w:"NAMIBIA",h:"A Southern African country with the Namib Desert"},
-      {w:"NEPAL",h:"A Himalayan country home to Mount Everest"},
-      {w:"NETHERLANDS",h:"A European country known for windmills and tulips"},
-      {w:"NEW ZEALAND",h:"An island nation near Australia known for kiwis and hobbits"},
-      {w:"NICARAGUA",h:"The largest country in Central America"},
-      {w:"NIGERIA",h:"The most populous country in Africa"},
-      {w:"NORWAY",h:"A Scandinavian country known for fjords"},
-      {w:"OMAN",h:"An Arabian Peninsula country known for its ancient forts"},
-      {w:"PAKISTAN",h:"A South Asian country with the Karakoram mountains"},
-      {w:"PANAMA",h:"A Central American country with a famous canal"},
-      {w:"PARAGUAY",h:"A landlocked South American country"},
-      {w:"PERU",h:"A South American country home to Machu Picchu"},
-      {w:"PHILIPPINES",h:"An archipelago nation in Southeast Asia"},
-      {w:"POLAND",h:"A Central European country with a turbulent history"},
-      {w:"PORTUGAL",h:"A Western European country famous for explorers"},
-      {w:"QATAR",h:"A small Gulf country that hosted the 2022 World Cup"},
-      {w:"ROMANIA",h:"An Eastern European country with Dracula's castle"},
-      {w:"RUSSIA",h:"The world's largest country by area"},
-      {w:"RWANDA",h:"A small densely-populated East African country"},
-      {w:"SAUDI ARABIA",h:"The largest country in the Middle East"},
-      {w:"SENEGAL",h:"A West African country that hosted the 2022 African Cup"},
-      {w:"SERBIA",h:"A landlocked Balkan country in Southeast Europe"},
-      {w:"SINGAPORE",h:"A tiny city-state island nation in Southeast Asia"},
-      {w:"SLOVAKIA",h:"A Central European country in the heart of the Carpathians"},
-      {w:"SLOVENIA",h:"A small Alpine country near the Adriatic Sea"},
-      {w:"SOMALIA",h:"A Horn of Africa country known for pirates and famine"},
-      {w:"SOUTH AFRICA",h:"A country with three capitals at the tip of Africa"},
-      {w:"SOUTH KOREA",h:"An East Asian country known for K-pop and tech"},
-      {w:"SPAIN",h:"A European country known for flamenco and bullfighting"},
-      {w:"SRI LANKA",h:"An island nation in the Indian Ocean south of India"},
-      {w:"SUDAN",h:"A Northeast African country along the Nile"},
-      {w:"SWEDEN",h:"A Scandinavian country known for IKEA and ABBA"},
-      {w:"SWITZERLAND",h:"A landlocked Alpine country famous for chocolate and banks"},
-      {w:"SYRIA",h:"A Middle Eastern country with an ancient history"},
-      {w:"TAIWAN",h:"An island democracy off the coast of China"},
-      {w:"TAJIKISTAN",h:"A mountainous Central Asian country"},
-      {w:"TANZANIA",h:"An East African country home to Kilimanjaro"},
-      {w:"THAILAND",h:"A Southeast Asian country known for temples and street food"},
-      {w:"TOGO",h:"A small West African country"},
-      {w:"TRINIDAD AND TOBAGO",h:"A twin-island Caribbean nation known for carnival"},
-      {w:"TUNISIA",h:"A North African country where Star Wars was filmed"},
-      {w:"TURKEY",h:"A country bridging Europe and Asia"},
-      {w:"TURKMENISTAN",h:"A Central Asian country with a flaming gas crater"},
-      {w:"UGANDA",h:"An East African country known as the Pearl of Africa"},
-      {w:"UKRAINE",h:"The largest country entirely within Europe"},
-      {w:"UNITED ARAB EMIRATES",h:"A Gulf country home to the tallest building in the world"},
-      {w:"UNITED KINGDOM",h:"The country that includes England, Scotland, Wales, and Northern Ireland"},
-      {w:"UNITED STATES",h:"The most powerful nation in the world, with 50 states"},
-      {w:"URUGUAY",h:"A small South American country with high quality of life"},
-      {w:"UZBEKISTAN",h:"A Central Asian country known for the Silk Road"},
-      {w:"VENEZUELA",h:"A South American country with the world's largest oil reserves"},
-      {w:"VIETNAM",h:"A Southeast Asian country known for the war and its cuisine"},
-      {w:"YEMEN",h:"An Arabian Peninsula country in ongoing conflict"},
-      {w:"ZAMBIA",h:"A landlocked Southern African country with Victoria Falls"},
-      {w:"ZIMBABWE",h:"A Southern African country that once had the worst inflation"},
-    ]
-  },
-  capitals: {
-    label:"Capital Cities",
-    hint_label:"Capital of:",
-    items:[
-      {w:"KABUL",h:"Capital of Afghanistan"},
-      {w:"TIRANA",h:"Capital of Albania"},
-      {w:"ALGIERS",h:"Capital of Algeria"},
-      {w:"LUANDA",h:"Capital of Angola"},
-      {w:"BUENOS AIRES",h:"Capital of Argentina"},
-      {w:"YEREVAN",h:"Capital of Armenia"},
-      {w:"CANBERRA",h:"Capital of Australia"},
-      {w:"VIENNA",h:"Capital of Austria"},
-      {w:"BAKU",h:"Capital of Azerbaijan"},
-      {w:"NASSAU",h:"Capital of the Bahamas"},
-      {w:"MANAMA",h:"Capital of Bahrain"},
-      {w:"DHAKA",h:"Capital of Bangladesh"},
-      {w:"MINSK",h:"Capital of Belarus"},
-      {w:"BRUSSELS",h:"Capital of Belgium"},
-      {w:"BELMOPAN",h:"Capital of Belize"},
-      {w:"PORTO NOVO",h:"Capital of Benin"},
-      {w:"THIMPHU",h:"Capital of Bhutan"},
-      {w:"SUCRE",h:"Capital of Bolivia"},
-      {w:"SARAJEVO",h:"Capital of Bosnia and Herzegovina"},
-      {w:"GABORONE",h:"Capital of Botswana"},
-      {w:"BRASILIA",h:"Capital of Brazil"},
-      {w:"BANDAR SERI BEGAWAN",h:"Capital of Brunei"},
-      {w:"SOFIA",h:"Capital of Bulgaria"},
-      {w:"OUAGADOUGOU",h:"Capital of Burkina Faso"},
-      {w:"PHNOM PENH",h:"Capital of Cambodia"},
-      {w:"YAOUNDE",h:"Capital of Cameroon"},
-      {w:"OTTAWA",h:"Capital of Canada"},
-      {w:"NDJAMENA",h:"Capital of Chad"},
-      {w:"SANTIAGO",h:"Capital of Chile"},
-      {w:"BEIJING",h:"Capital of China"},
-      {w:"BOGOTA",h:"Capital of Colombia"},
-      {w:"MORONI",h:"Capital of Comoros"},
-      {w:"SAN JOSE",h:"Capital of Costa Rica"},
-      {w:"ZAGREB",h:"Capital of Croatia"},
-      {w:"HAVANA",h:"Capital of Cuba"},
-      {w:"NICOSIA",h:"Capital of Cyprus"},
-      {w:"PRAGUE",h:"Capital of the Czech Republic"},
-      {w:"COPENHAGEN",h:"Capital of Denmark"},
-      {w:"DJIBOUTI",h:"Capital of Djibouti"},
-      {w:"SANTO DOMINGO",h:"Capital of the Dominican Republic"},
-      {w:"QUITO",h:"Capital of Ecuador"},
-      {w:"CAIRO",h:"Capital of Egypt"},
-      {w:"SAN SALVADOR",h:"Capital of El Salvador"},
-      {w:"MALABO",h:"Capital of Equatorial Guinea"},
-      {w:"ASMARA",h:"Capital of Eritrea"},
-      {w:"TALLINN",h:"Capital of Estonia"},
-      {w:"ADDIS ABABA",h:"Capital of Ethiopia"},
-      {w:"SUVA",h:"Capital of Fiji"},
-      {w:"HELSINKI",h:"Capital of Finland"},
-      {w:"PARIS",h:"Capital of France"},
-      {w:"LIBREVILLE",h:"Capital of Gabon"},
-      {w:"BANJUL",h:"Capital of Gambia"},
-      {w:"TBILISI",h:"Capital of Georgia"},
-      {w:"BERLIN",h:"Capital of Germany"},
-      {w:"ACCRA",h:"Capital of Ghana"},
-      {w:"ATHENS",h:"Capital of Greece"},
-      {w:"GUATEMALA CITY",h:"Capital of Guatemala"},
-      {w:"CONAKRY",h:"Capital of Guinea"},
-      {w:"PORT AU PRINCE",h:"Capital of Haiti"},
-      {w:"TEGUCIGALPA",h:"Capital of Honduras"},
-      {w:"BUDAPEST",h:"Capital of Hungary"},
-      {w:"REYKJAVIK",h:"Capital of Iceland"},
-      {w:"NEW DELHI",h:"Capital of India"},
-      {w:"JAKARTA",h:"Capital of Indonesia"},
-      {w:"TEHRAN",h:"Capital of Iran"},
-      {w:"BAGHDAD",h:"Capital of Iraq"},
-      {w:"DUBLIN",h:"Capital of Ireland"},
-      {w:"JERUSALEM",h:"Capital of Israel"},
-      {w:"ROME",h:"Capital of Italy"},
-      {w:"KINGSTON",h:"Capital of Jamaica"},
-      {w:"TOKYO",h:"Capital of Japan"},
-      {w:"AMMAN",h:"Capital of Jordan"},
-      {w:"ASTANA",h:"Capital of Kazakhstan"},
-      {w:"NAIROBI",h:"Capital of Kenya"},
-      {w:"TARAWA",h:"Capital of Kiribati"},
-      {w:"KUWAIT CITY",h:"Capital of Kuwait"},
-      {w:"BISHKEK",h:"Capital of Kyrgyzstan"},
-      {w:"VIENTIANE",h:"Capital of Laos"},
-      {w:"RIGA",h:"Capital of Latvia"},
-      {w:"BEIRUT",h:"Capital of Lebanon"},
-      {w:"MASERU",h:"Capital of Lesotho"},
-      {w:"MONROVIA",h:"Capital of Liberia"},
-      {w:"TRIPOLI",h:"Capital of Libya"},
-      {w:"VADUZ",h:"Capital of Liechtenstein"},
-      {w:"VILNIUS",h:"Capital of Lithuania"},
-      {w:"LUXEMBOURG CITY",h:"Capital of Luxembourg"},
-      {w:"ANTANANARIVO",h:"Capital of Madagascar"},
-      {w:"LILONGWE",h:"Capital of Malawi"},
-      {w:"KUALA LUMPUR",h:"Capital of Malaysia"},
-      {w:"MALE",h:"Capital of the Maldives"},
-      {w:"BAMAKO",h:"Capital of Mali"},
-      {w:"VALLETTA",h:"Capital of Malta"},
-      {w:"MEXICO CITY",h:"Capital of Mexico"},
-      {w:"CHISINAU",h:"Capital of Moldova"},
-      {w:"MONACO",h:"Capital of Monaco"},
-      {w:"ULAANBAATAR",h:"Capital of Mongolia"},
-      {w:"PODGORICA",h:"Capital of Montenegro"},
-      {w:"RABAT",h:"Capital of Morocco"},
-      {w:"MAPUTO",h:"Capital of Mozambique"},
-      {w:"NAYPYIDAW",h:"Capital of Myanmar"},
-      {w:"WINDHOEK",h:"Capital of Namibia"},
-      {w:"KATHMANDU",h:"Capital of Nepal"},
-      {w:"AMSTERDAM",h:"Capital of the Netherlands"},
-      {w:"WELLINGTON",h:"Capital of New Zealand"},
-      {w:"MANAGUA",h:"Capital of Nicaragua"},
-      {w:"NIAMEY",h:"Capital of Niger"},
-      {w:"ABUJA",h:"Capital of Nigeria"},
-      {w:"OSLO",h:"Capital of Norway"},
-      {w:"MUSCAT",h:"Capital of Oman"},
-      {w:"ISLAMABAD",h:"Capital of Pakistan"},
-      {w:"PANAMA CITY",h:"Capital of Panama"},
-      {w:"ASUNCION",h:"Capital of Paraguay"},
-      {w:"LIMA",h:"Capital of Peru"},
-      {w:"MANILA",h:"Capital of the Philippines"},
-      {w:"WARSAW",h:"Capital of Poland"},
-      {w:"LISBON",h:"Capital of Portugal"},
-      {w:"DOHA",h:"Capital of Qatar"},
-      {w:"BUCHAREST",h:"Capital of Romania"},
-      {w:"MOSCOW",h:"Capital of Russia"},
-      {w:"KIGALI",h:"Capital of Rwanda"},
-      {w:"RIYADH",h:"Capital of Saudi Arabia"},
-      {w:"DAKAR",h:"Capital of Senegal"},
-      {w:"BELGRADE",h:"Capital of Serbia"},
-      {w:"SINGAPORE",h:"Capital city-state of Singapore"},
-      {w:"BRATISLAVA",h:"Capital of Slovakia"},
-      {w:"LJUBLJANA",h:"Capital of Slovenia"},
-      {w:"MOGADISHU",h:"Capital of Somalia"},
-      {w:"PRETORIA",h:"Executive capital of South Africa"},
-      {w:"SEOUL",h:"Capital of South Korea"},
-      {w:"MADRID",h:"Capital of Spain"},
-      {w:"COLOMBO",h:"Largest city of Sri Lanka, acting capital"},
-      {w:"KHARTOUM",h:"Capital of Sudan"},
-      {w:"STOCKHOLM",h:"Capital of Sweden"},
-      {w:"BERN",h:"Capital of Switzerland"},
-      {w:"DAMASCUS",h:"Capital of Syria"},
-      {w:"TAIPEI",h:"Capital of Taiwan"},
-      {w:"DODOMA",h:"Capital of Tanzania"},
-      {w:"BANGKOK",h:"Capital of Thailand"},
-      {w:"LOME",h:"Capital of Togo"},
-      {w:"PORT OF SPAIN",h:"Capital of Trinidad and Tobago"},
-      {w:"TUNIS",h:"Capital of Tunisia"},
-      {w:"ANKARA",h:"Capital of Turkey"},
-      {w:"ASHGABAT",h:"Capital of Turkmenistan"},
-      {w:"KAMPALA",h:"Capital of Uganda"},
-      {w:"KYIV",h:"Capital of Ukraine"},
-      {w:"ABU DHABI",h:"Capital of the United Arab Emirates"},
-      {w:"LONDON",h:"Capital of the United Kingdom"},
-      {w:"WASHINGTON DC",h:"Capital of the United States"},
-      {w:"MONTEVIDEO",h:"Capital of Uruguay"},
-      {w:"TASHKENT",h:"Capital of Uzbekistan"},
-      {w:"CARACAS",h:"Capital of Venezuela"},
-      {w:"HANOI",h:"Capital of Vietnam"},
-      {w:"SANAA",h:"Capital of Yemen"},
-      {w:"LUSAKA",h:"Capital of Zambia"},
-      {w:"HARARE",h:"Capital of Zimbabwe"},
-    ]
-  },
-  cars: {
-    label:"Car Brands",
-    hint_label:"Car brand hint:",
-    items:[
-      {w:"TOYOTA",h:"Japan's biggest and best-selling car brand"},
-      {w:"HONDA",h:"Japanese brand famous for the Civic and Accord"},
-      {w:"FORD",h:"American brand that made the Mustang famous"},
-      {w:"CHEVROLET",h:"American brand known as Chevy"},
-      {w:"NISSAN",h:"Japanese brand that makes the GT-R"},
-      {w:"VOLKSWAGEN",h:"German brand meaning 'People's Car'"},
-      {w:"BMW",h:"German brand known as 'The Ultimate Driving Machine'"},
-      {w:"MERCEDES",h:"German luxury brand with a star logo"},
-      {w:"AUDI",h:"German luxury brand with four rings logo"},
-      {w:"FERRARI",h:"Italian luxury sports car brand with a prancing horse"},
-      {w:"LAMBORGHINI",h:"Italian supercar brand named after its founder"},
-      {w:"PORSCHE",h:"German sports car brand famous for the 911"},
-      {w:"MASERATI",h:"Italian luxury car brand with a trident logo"},
-      {w:"BENTLEY",h:"British ultra-luxury car brand"},
-      {w:"ROLLS ROYCE",h:"British car brand known as the most luxurious in the world"},
-      {w:"TESLA",h:"American electric car brand founded by Elon Musk"},
-      {w:"HYUNDAI",h:"South Korean brand known for affordable quality cars"},
-      {w:"KIA",h:"South Korean brand with sleek modern designs"},
-      {w:"SUBARU",h:"Japanese brand famous for all-wheel drive cars"},
-      {w:"MAZDA",h:"Japanese brand known for the Zoom-Zoom slogan"},
-      {w:"MITSUBISHI",h:"Japanese brand known for its rally cars"},
-      {w:"SUZUKI",h:"Japanese brand popular for motorcycles and small cars"},
-      {w:"JEEP",h:"American brand famous for off-road vehicles"},
-      {w:"DODGE",h:"American brand with muscle cars like the Challenger"},
-      {w:"CHRYSLER",h:"American car manufacturer headquartered in Auburn Hills"},
-      {w:"BUICK",h:"American luxury brand under General Motors"},
-      {w:"CADILLAC",h:"American luxury car brand with a coat of arms logo"},
-      {w:"LINCOLN",h:"American luxury brand named after President Lincoln"},
-      {w:"RAM",h:"American brand known for its pickup trucks"},
-      {w:"GMC",h:"American truck and SUV brand under General Motors"},
-      {w:"VOLVO",h:"Swedish brand known for safety innovations"},
-      {w:"SAAB",h:"Swedish brand that started making military aircraft"},
-      {w:"ALFA ROMEO",h:"Italian brand with a Milan cross and serpent logo"},
-      {w:"FIAT",h:"Italian brand that makes small popular city cars"},
-      {w:"PEUGEOT",h:"French brand with a lion logo"},
-      {w:"RENAULT",h:"French brand known for the Clio"},
-      {w:"CITROEN",h:"French brand known for innovative suspension"},
-      {w:"BUGATTI",h:"French hypercar brand with the Veyron and Chiron"},
-      {w:"ASTON MARTIN",h:"British luxury brand known as James Bond's car"},
-      {w:"JAGUAR",h:"British luxury brand with a leaping cat logo"},
-      {w:"LAND ROVER",h:"British brand known for rugged off-road vehicles"},
-      {w:"MINI",h:"British brand known for its iconic small classic car"},
-      {w:"MCLAREN",h:"British supercar brand from a Formula 1 team"},
-      {w:"LOTUS",h:"British sports car brand known for lightweight design"},
-      {w:"SKODA",h:"Czech car brand owned by the Volkswagen Group"},
-      {w:"SEAT",h:"Spanish car brand also owned by Volkswagen Group"},
-      {w:"DACIA",h:"Romanian affordable car brand owned by Renault"},
-      {w:"RIVIAN",h:"American electric truck and SUV brand"},
-      {w:"LUCID",h:"American luxury electric vehicle brand"},
-      {w:"GENESIS",h:"South Korean luxury car brand from Hyundai"},
-      {w:"INFINITI",h:"Japanese luxury brand owned by Nissan"},
-      {w:"ACURA",h:"Japanese luxury brand owned by Honda"},
-      {w:"LEXUS",h:"Japanese luxury brand owned by Toyota"},
-      {w:"LINCOLN",h:"American luxury brand under Ford Motor Company"},
-      {w:"CADILLAC",h:"American luxury brand known for Escalade SUVs"},
-    ]
-  },
-  events: {
-    label:"World Events",
-    hint_label:"Event hint:",
-    items:[
-      {w:"WORLD WAR ONE",h:"The Great War fought from 1914 to 1918"},
-      {w:"WORLD WAR TWO",h:"The deadliest conflict in history from 1939 to 1945"},
-      {w:"MOON LANDING",h:"Apollo 11 crew walked on the Moon in 1969"},
-      {w:"FRENCH REVOLUTION",h:"The overthrow of the French monarchy in 1789"},
-      {w:"AMERICAN REVOLUTION",h:"The 13 colonies gained independence from Britain in 1776"},
-      {w:"INDUSTRIAL REVOLUTION",h:"The shift from hand production to machine manufacturing"},
-      {w:"BLACK PLAGUE",h:"A pandemic that killed one third of Europe in the 1300s"},
-      {w:"FALL OF ROME",h:"The collapse of the Western Roman Empire in 476 AD"},
-      {w:"RENAISSANCE",h:"A cultural and artistic rebirth in Europe from 14th to 17th century"},
-      {w:"COLD WAR",h:"The political tension between USA and USSR from 1947 to 1991"},
-      {w:"BERLIN WALL",h:"A barrier dividing East and West Germany from 1961 to 1989"},
-      {w:"PEARL HARBOR",h:"Japan's surprise attack on the US Navy base in Hawaii in 1941"},
-      {w:"HIROSHIMA",h:"First city hit by an atomic bomb in 1945"},
-      {w:"KOREAN WAR",h:"Conflict between North and South Korea from 1950 to 1953"},
-      {w:"VIETNAM WAR",h:"Conflict in Southeast Asia from 1955 to 1975"},
-      {w:"CUBAN MISSILE CRISIS",h:"A nuclear standoff between the US and USSR in 1962"},
-      {w:"CIVIL RIGHTS MOVEMENT",h:"African Americans fighting for equality in the 1950s and 60s"},
-      {w:"APARTHEID",h:"South Africa's system of racial segregation ending in 1994"},
-      {w:"HOLOCAUST",h:"The genocide of six million Jewish people in World War Two"},
-      {w:"RWANDAN GENOCIDE",h:"Mass killing of Tutsi people in Rwanda in 1994"},
-      {w:"SEPTEMBER ELEVEN",h:"Terrorist attacks on the US on September 11, 2001"},
-      {w:"IRAQ WAR",h:"US-led invasion of Iraq in 2003"},
-      {w:"ARAB SPRING",h:"Pro-democracy uprisings across the Arab world beginning in 2010"},
-      {w:"COVID PANDEMIC",h:"The global COVID-19 health crisis beginning in 2020"},
-      {w:"CHERNOBYL DISASTER",h:"A catastrophic nuclear accident in Ukraine in 1986"},
-      {w:"FUKUSHIMA DISASTER",h:"Nuclear meltdown in Japan triggered by a 2011 tsunami"},
-      {w:"GREAT DEPRESSION",h:"The global economic downturn starting with the 1929 stock crash"},
-      {w:"WALL STREET CRASH",h:"The 1929 stock market collapse that began the Great Depression"},
-      {w:"FALL OF BERLIN WALL",h:"German reunification symbol when the wall came down in 1989"},
-      {w:"DISSOLUTION OF USSR",h:"The breakup of the Soviet Union in 1991"},
-      {w:"SIGNING OF MAGNA CARTA",h:"A 1215 document limiting royal power in England"},
-      {w:"BOSTON TEA PARTY",h:"American colonists dumped British tea into Boston Harbor in 1773"},
-      {w:"STORMING THE BASTILLE",h:"Parisian crowds stormed a prison on July 14, 1789"},
-      {w:"BATTLE OF WATERLOO",h:"Napoleon's final defeat in Belgium in 1815"},
-      {w:"BATTLE OF GETTYSBURG",h:"A turning point in the American Civil War in 1863"},
-      {w:"ASSASSINATION OF LINCOLN",h:"President Lincoln was shot at Ford's Theatre in 1865"},
-      {w:"ASSASSINATION OF JFK",h:"President Kennedy was shot in Dallas in 1963"},
-      {w:"CUBAN REVOLUTION",h:"Fidel Castro took control of Cuba in 1959"},
-      {w:"IRANIAN REVOLUTION",h:"Ayatollah Khomeini established an Islamic republic in 1979"},
-      {w:"TIANANMEN SQUARE",h:"Chinese pro-democracy protests were crushed in 1989"},
-      {w:"FALL OF APARTHEID",h:"Nelson Mandela became South Africa's president in 1994"},
-      {w:"INVENTION OF INTERNET",h:"Tim Berners-Lee created the World Wide Web in 1989"},
-      {w:"FIRST AIRPLANE FLIGHT",h:"Wright Brothers flew the first powered plane in 1903"},
-      {w:"INVENTION OF TELEPHONE",h:"Alexander Graham Bell patented the phone in 1876"},
-      {w:"PRINTING PRESS",h:"Gutenberg invented movable type printing around 1440"},
-      {w:"DISCOVERY OF PENICILLIN",h:"Alexander Fleming discovered the first antibiotic in 1928"},
-      {w:"FIRST HEART TRANSPLANT",h:"Dr Christiaan Barnard performed the operation in 1967"},
-      {w:"HUMAN GENOME PROJECT",h:"Scientists mapped all human DNA, completed in 2003"},
-      {w:"FIRST CLONED SHEEP",h:"Dolly the sheep was the first cloned mammal in 1996"},
-      {w:"DISCOVERY OF AMERICA",h:"Columbus reached the Americas in 1492"},
-      {w:"CIRCUMNAVIGATION OF EARTH",h:"Magellan's crew sailed around the world in 1522"},
-      {w:"SIGNING OF UN CHARTER",h:"The United Nations was founded in 1945"},
-      {w:"SPUTNIK LAUNCH",h:"USSR launched the first Earth satellite in 1957"},
-      {w:"FIRST SPACEWALK",h:"Cosmonaut Leonov walked in space in 1965"},
-      {w:"APOLLO THIRTEEN",h:"The near-disastrous 1970 moon mission saved by the crew"},
-      {w:"CHALLENGER DISASTER",h:"The space shuttle exploded 73 seconds after launch in 1986"},
-      {w:"COLUMBIA DISASTER",h:"A space shuttle broke apart during re-entry in 2003"},
-      {w:"MARS ROVER LANDING",h:"NASA's Curiosity rover landed on Mars in 2012"},
-      {w:"LAUNCH OF HUBBLE",h:"The Hubble Space Telescope was launched in 1990"},
-      {w:"DISCOVERY OF PLUTO",h:"Clyde Tombaugh found the dwarf planet in 1930"},
-      {w:"BLACK HOLE PHOTOGRAPH",h:"The first image of a black hole was captured in 2019"},
-      {w:"OLYMPIC GAMES REVIVAL",h:"The modern Olympics began in Athens in 1896"},
-      {w:"FIRST WORLD CUP",h:"The first FIFA World Cup was held in Uruguay in 1930"},
-      {w:"BERLIN OLYMPICS",h:"The 1936 Olympics controversially held in Nazi Germany"},
-      {w:"MUNICH MASSACRE",h:"Palestinian terrorists attacked the 1972 Olympics"},
-      {w:"MANDELA RELEASED",h:"Nelson Mandela was freed after 27 years in prison in 1990"},
-      {w:"RWANDAN PEACE",h:"A peace process ended the Rwandan conflict in 1994"},
-      {w:"BREXIT",h:"The United Kingdom voted to leave the European Union in 2016"},
-      {w:"TRUMP ELECTED",h:"Donald Trump won the 2016 US presidential election"},
-      {w:"OBAMA ELECTED",h:"Barack Obama became the first Black US President in 2008"},
-      {w:"FORMATION OF NATO",h:"The military alliance was founded in 1949"},
-      {w:"MARSHALL PLAN",h:"The US helped rebuild Europe after World War Two"},
-      {w:"FALL OF OTTOMAN EMPIRE",h:"The Ottoman Empire collapsed after World War One in 1922"},
-      {w:"TREATY OF VERSAILLES",h:"The 1919 peace treaty that ended World War One"},
-      {w:"MEIJI RESTORATION",h:"Japan's modernization period beginning in 1868"},
-      {w:"CHINESE CIVIL WAR",h:"Communists defeated Nationalists to establish the PRC in 1949"},
-      {w:"PARTITION OF INDIA",h:"India and Pakistan became independent in 1947"},
-      {w:"SUEZ CANAL CRISIS",h:"Egypt nationalized the canal in 1956"},
-      {w:"VIETNAM WAR ENDS",h:"North Vietnam captured Saigon in 1975"},
-      {w:"FALKLANDS WAR",h:"Britain and Argentina fought over the islands in 1982"},
-      {w:"GULF WAR",h:"Coalition forces drove Iraq out of Kuwait in 1991"},
-      {w:"BALI BOMBINGS",h:"Terrorist attacks in Indonesia killed 202 people in 2002"},
-      {w:"MADRID BOMBINGS",h:"Train bombs killed 193 people in Spain in 2004"},
-      {w:"LONDON BOMBINGS",h:"Suicide bombers attacked London transport in 2005"},
-      {w:"TSUNAMI OF TWO THOUSAND FOUR",h:"A massive Indian Ocean tsunami killed 230,000 people"},
-      {w:"HAITI EARTHQUAKE",h:"A devastating earthquake struck Haiti in 2010"},
-      {w:"NEPAL EARTHQUAKE",h:"A deadly earthquake struck Nepal in 2015"},
-      {w:"HURRICANE KATRINA",h:"A powerful storm devastated New Orleans in 2005"},
-      {w:"DEEPWATER HORIZON",h:"An oil rig explosion caused a massive Gulf of Mexico spill in 2010"},
-      {w:"AMAZON FIRES",h:"Record fires burned in the Amazon rainforest in 2019"},
-      {w:"AUSTRALIA BUSHFIRES",h:"Massive wildfires burned across Australia in 2019 to 2020"},
-      {w:"GEORGE FLOYD",h:"His death sparked global Black Lives Matter protests in 2020"},
-      {w:"HONG KONG PROTESTS",h:"Pro-democracy demonstrations shook Hong Kong in 2019"},
-      {w:"MYANMAR COUP",h:"The military seized power in a 2021 coup"},
-      {w:"UKRAINE INVASION",h:"Russia invaded Ukraine in February 2022"},
-      {w:"ISRAEL HAMAS WAR",h:"Conflict erupted after a Hamas attack on Israel in October 2023"},
-      {w:"CHATGPT LAUNCH",h:"OpenAI released its conversational AI tool in 2022"},
-      {w:"CROWDSTRIKE OUTAGE",h:"A software update caused a massive global IT outage in 2024"},
-      {w:"PARIS OLYMPICS",h:"France hosted the Summer Olympic Games in 2024"},
-    ]
-  },
-  people: {
-    label:"Famous People",
-    hint_label:"Person hint:",
-    items:[
-      {w:"ALBERT EINSTEIN",h:"Physicist who developed the theory of relativity"},
-      {w:"MARIE CURIE",h:"Scientist who discovered radium and polonium"},
-      {w:"ISAAC NEWTON",h:"Physicist who described gravity and the laws of motion"},
-      {w:"CHARLES DARWIN",h:"Naturalist who developed the theory of evolution"},
-      {w:"NIKOLA TESLA",h:"Inventor who pioneered alternating current electricity"},
-      {w:"STEPHEN HAWKING",h:"Physicist famous for black hole research and ALS"},
-      {w:"GALILEO GALILEI",h:"Astronomer who championed heliocentrism"},
-      {w:"THOMAS EDISON",h:"Inventor of the phonograph and practical light bulb"},
-      {w:"ALEXANDER GRAHAM BELL",h:"Inventor of the telephone"},
-      {w:"LOUIS PASTEUR",h:"Scientist who developed pasteurization and vaccines"},
-      {w:"NAPOLEON BONAPARTE",h:"French emperor who conquered much of Europe"},
-      {w:"JULIUS CAESAR",h:"Roman general and dictator assassinated on the Ides of March"},
-      {w:"CLEOPATRA",h:"The last active ruler of the Ptolemaic Kingdom of Egypt"},
-      {w:"ALEXANDER THE GREAT",h:"Ancient Macedonian king who built a massive empire"},
-      {w:"GENGHIS KHAN",h:"Founder of the Mongol Empire in the 13th century"},
-      {w:"CHRISTOPHER COLUMBUS",h:"Explorer who sailed to the Americas in 1492"},
-      {w:"NELSON MANDELA",h:"Anti-apartheid activist and first Black president of South Africa"},
-      {w:"MARTIN LUTHER KING",h:"Civil rights leader famous for his I Have a Dream speech"},
-      {w:"MAHATMA GANDHI",h:"Indian independence leader who practiced nonviolent resistance"},
-      {w:"MOTHER TERESA",h:"Catholic nun who served the poor in Kolkata"},
-      {w:"WINSTON CHURCHILL",h:"British prime minister who led the country in World War Two"},
-      {w:"ADOLF HITLER",h:"Nazi dictator responsible for World War Two and the Holocaust"},
-      {w:"JOSEPH STALIN",h:"Soviet dictator who ruled the USSR with an iron fist"},
-      {w:"MAO ZEDONG",h:"Founder of the People's Republic of China"},
-      {w:"FRANKLIN ROOSEVELT",h:"US president who guided the nation through WWII"},
-      {w:"GEORGE WASHINGTON",h:"First president of the United States"},
-      {w:"ABRAHAM LINCOLN",h:"US president who abolished slavery"},
-      {w:"BARACK OBAMA",h:"44th US president and first African American to hold the office"},
-      {w:"JOHN KENNEDY",h:"35th US president, assassinated in Dallas in 1963"},
-      {w:"QUEEN ELIZABETH",h:"Longest-reigning British monarch in history"},
-      {w:"WILLIAM SHAKESPEARE",h:"Playwright who wrote Hamlet, Romeo and Juliet, and Macbeth"},
-      {w:"MICHELANGELO",h:"Renaissance artist who painted the Sistine Chapel ceiling"},
-      {w:"LEONARDO DA VINCI",h:"Renaissance polymath who painted the Mona Lisa"},
-      {w:"PABLO PICASSO",h:"Spanish artist who co-founded Cubism"},
-      {w:"MOZART",h:"Child prodigy composer from Austria in the 18th century"},
-      {w:"BEETHOVEN",h:"German composer who wrote symphonies while deaf"},
-      {w:"MICHAEL JACKSON",h:"The King of Pop known for the moonwalk"},
-      {w:"ELVIS PRESLEY",h:"The King of Rock and Roll from Memphis, Tennessee"},
-      {w:"THE BEATLES",h:"The most influential band in music history from Liverpool"},
-      {w:"MADONNA",h:"The Queen of Pop known for reinventing herself"},
-      {w:"TAYLOR SWIFT",h:"Pop star who writes her own songs about relationships"},
-      {w:"OPRAH WINFREY",h:"Media mogul and famous daytime talk show host"},
-      {w:"ELON MUSK",h:"Entrepreneur behind Tesla, SpaceX, and owning X"},
-      {w:"BILL GATES",h:"Co-founder of Microsoft and major philanthropist"},
-      {w:"STEVE JOBS",h:"Apple co-founder who revolutionized personal computing"},
-      {w:"MARK ZUCKERBERG",h:"Co-founder of Facebook and head of Meta"},
-      {w:"JEFF BEZOS",h:"Founder of Amazon, the world's largest online retailer"},
-      {w:"WARREN BUFFETT",h:"Legendary investor known as the Oracle of Omaha"},
-      {w:"SERENA WILLIAMS",h:"One of the greatest female tennis players of all time"},
-      {w:"ROGER FEDERER",h:"Swiss tennis player with 20 Grand Slam titles"},
-      {w:"LIONEL MESSI",h:"Argentine football legend who won the 2022 World Cup"},
-      {w:"CRISTIANO RONALDO",h:"Portuguese football star known for his fitness and goals"},
-      {w:"LEBRON JAMES",h:"NBA star often compared to Michael Jordan"},
-      {w:"USAIN BOLT",h:"Jamaican sprinter and fastest man in history"},
-      {w:"MUHAMMAD ALI",h:"Boxing world champion known as The Greatest"},
-      {w:"MICHAEL JORDAN",h:"NBA legend and inspiration for the Air Jordan brand"},
-      {w:"SIMONE BILES",h:"American gymnast with the most World Championship medals"},
-      {w:"PELE",h:"Brazilian football legend often called the greatest ever"},
-      {w:"NEIL ARMSTRONG",h:"First human to walk on the Moon in 1969"},
-      {w:"YURI GAGARIN",h:"First human to travel to space in 1961"},
-      {w:"AMELIA EARHART",h:"First woman to fly solo across the Atlantic Ocean"},
-      {w:"FLORENCE NIGHTINGALE",h:"Pioneer of modern nursing during the Crimean War"},
-      {w:"ANNE FRANK",h:"Young Jewish diarist who hid from Nazis in Amsterdam"},
-      {w:"HARRIET TUBMAN",h:"Escaped slave who led others to freedom via the Underground Railroad"},
-      {w:"ROSA PARKS",h:"Civil rights icon who refused to give up her bus seat"},
-      {w:"MALALA YOUSAFZAI",h:"Pakistani activist for girls' education and youngest Nobel laureate"},
-      {w:"GRETA THUNBERG",h:"Swedish climate activist who started the school strikes"},
-      {w:"DALAI LAMA",h:"Spiritual leader of Tibetan Buddhism"},
-      {w:"POPE FRANCIS",h:"The 266th pope and first from Latin America"},
-      {w:"CONFUCIUS",h:"Chinese philosopher whose teachings shaped Eastern thought"},
-      {w:"ARISTOTLE",h:"Ancient Greek philosopher and student of Plato"},
-      {w:"PLATO",h:"Ancient Greek philosopher who founded the Academy"},
-      {w:"SOCRATES",h:"Ancient Greek philosopher known for the Socratic method"},
-      {w:"SIGMUND FREUD",h:"Austrian neurologist who founded psychoanalysis"},
-      {w:"CHARLES DICKENS",h:"Victorian author who wrote Oliver Twist and A Christmas Carol"},
-      {w:"JK ROWLING",h:"British author who created Harry Potter"},
-      {w:"STEPHEN KING",h:"American author known as the master of horror"},
-      {w:"AGATHA CHRISTIE",h:"Best-selling mystery author who created Hercule Poirot"},
-      {w:"MARK TWAIN",h:"American author who wrote Tom Sawyer and Huckleberry Finn"},
-      {w:"GEORGE ORWELL",h:"British author who wrote Nineteen Eighty-Four and Animal Farm"},
-      {w:"ERNEST HEMINGWAY",h:"American author known for The Old Man and the Sea"},
-      {w:"EDGAR ALLAN POE",h:"American author known for dark gothic stories and poems"},
-      {w:"WALT DISNEY",h:"Creator of Mickey Mouse and founder of Disney"},
-      {w:"STEVEN SPIELBERG",h:"Director of Jaws, ET, and Schindler's List"},
-      {w:"JAMES CAMERON",h:"Director of Titanic and Avatar"},
-    ]
-  },
-  phrases: {
-    label:"Phrases",
-    hint_label:"Phrase hint:",
-    items:[
-      {w:"BREAK A LEG",h:"Good luck! Said before a performance"},
-      {w:"UNDER THE WEATHER",h:"Feeling sick or unwell"},
-      {w:"PIECE OF CAKE",h:"Something very easy to do"},
-      {w:"ONCE IN A BLUE MOON",h:"Something that happens very rarely"},
-      {w:"BITE THE BULLET",h:"Endure a painful situation bravely"},
-      {w:"HIT THE NAIL ON THE HEAD",h:"Be exactly right about something"},
-      {w:"BURN THE MIDNIGHT OIL",h:"Work late into the night"},
-      {w:"COST AN ARM AND A LEG",h:"Very expensive"},
-      {w:"BACK TO THE DRAWING BOARD",h:"Start again from the beginning"},
-      {w:"BARKING UP THE WRONG TREE",h:"Looking in the wrong place for something"},
-      {w:"BITE OFF MORE THAN YOU CAN CHEW",h:"Take on more than you can handle"},
-      {w:"ACTIONS SPEAK LOUDER THAN WORDS",h:"What you do matters more than what you say"},
-      {w:"EVERY CLOUD HAS A SILVER LINING",h:"There is something positive in every bad situation"},
-      {w:"DONT JUDGE A BOOK BY ITS COVER",h:"Don't judge based on appearances alone"},
-      {w:"THE EARLY BIRD CATCHES THE WORM",h:"Acting early gives you an advantage"},
-      {w:"BETTER LATE THAN NEVER",h:"It's better to do something late than not at all"},
-      {w:"KILL TWO BIRDS WITH ONE STONE",h:"Accomplish two things with one action"},
-      {w:"THE GRASS IS ALWAYS GREENER",h:"Others always seem to have it better than you"},
-      {w:"A PENNY FOR YOUR THOUGHTS",h:"Asking someone what they are thinking about"},
-      {w:"ADD FUEL TO THE FIRE",h:"Make a bad situation worse"},
-      {w:"AT THE DROP OF A HAT",h:"Do something immediately without hesitation"},
-      {w:"BEAT AROUND THE BUSH",h:"Avoid talking about the main point"},
-      {w:"BITE THE HAND THAT FEEDS YOU",h:"Hurt someone who is helping you"},
-      {w:"BY THE SKIN OF YOUR TEETH",h:"Barely manage to do something"},
-      {w:"CAUGHT BETWEEN A ROCK AND A HARD PLACE",h:"Forced to choose between two bad options"},
-      {w:"DONT CRY OVER SPILLED MILK",h:"Don't be upset about things that have already happened"},
-      {w:"EVERY DOG HAS ITS DAY",h:"Everyone has a time when they succeed"},
-      {w:"FACE THE MUSIC",h:"Accept the consequences of your actions"},
-      {w:"GET OUT OF BED ON THE WRONG SIDE",h:"Start the day in a bad mood"},
-      {w:"GO BACK TO SQUARE ONE",h:"Start completely over again"},
-      {w:"HIT THE SACK",h:"Go to bed and sleep"},
-      {w:"IN THE BLINK OF AN EYE",h:"Happening very quickly"},
-      {w:"IT TAKES TWO TO TANGO",h:"Both people are responsible for a problem"},
-      {w:"JUMP ON THE BANDWAGON",h:"Follow a popular trend"},
-      {w:"KEEP YOUR FINGERS CROSSED",h:"Hope that something goes well"},
-      {w:"LEAVE NO STONE UNTURNED",h:"Try every possible option"},
-      {w:"LET THE CAT OUT OF THE BAG",h:"Reveal a secret by mistake"},
-      {w:"LOOK BEFORE YOU LEAP",h:"Think carefully before acting"},
-      {w:"MAKE A LONG STORY SHORT",h:"Get to the point quickly"},
-      {w:"MISS THE BOAT",h:"Miss an opportunity"},
-      {w:"NECK OF THE WOODS",h:"A particular area or neighborhood"},
-      {w:"NO PAIN NO GAIN",h:"You have to work hard to achieve something"},
-      {w:"ON THE BALL",h:"Alert and quick to react"},
-      {w:"ON THE FENCE",h:"Undecided or neutral about something"},
-      {w:"ONCE BITTEN TWICE SHY",h:"You become careful after a bad experience"},
-      {w:"PULL SOMEONES LEG",h:"Joke with or tease someone"},
-      {w:"PUT ALL YOUR EGGS IN ONE BASKET",h:"Rely on a single plan or option"},
-      {w:"RAINING CATS AND DOGS",h:"It is raining very heavily"},
-      {w:"RULE OF THUMB",h:"A general principle based on experience"},
-      {w:"SEE EYE TO EYE",h:"Agree with someone completely"},
-      {w:"SITTING ON THE FENCE",h:"Not taking a side in an argument"},
-      {w:"SPILL THE BEANS",h:"Reveal secret information"},
-      {w:"STEAL SOMEONE'S THUNDER",h:"Take attention away from someone else"},
-      {w:"TAKE IT WITH A GRAIN OF SALT",h:"Be skeptical about something"},
-      {w:"THE BALL IS IN YOUR COURT",h:"It is up to you to take the next action"},
-      {w:"THE BEST OF BOTH WORLDS",h:"Enjoy two different advantages at once"},
-      {w:"THE LAST STRAW",h:"The final problem that causes someone to lose patience"},
-      {w:"THROUGH THICK AND THIN",h:"In both good and bad times"},
-      {w:"THROW IN THE TOWEL",h:"Give up on something"},
-      {w:"TIME FLIES",h:"Time passes very quickly"},
-      {w:"TWIST SOMEONE'S ARM",h:"Persuade someone to do something they don't want to"},
-      {w:"TWO PEAS IN A POD",h:"Two people who are very similar"},
-      {w:"UNDER SOMEONE'S THUMB",h:"Controlled or dominated by someone"},
-      {w:"UP IN THE AIR",h:"Something uncertain or undecided"},
-      {w:"WHEN PIGS FLY",h:"Something that will never happen"},
-      {w:"YOU CANT HAVE YOUR CAKE AND EAT IT",h:"You can't have everything your own way"},
-      {w:"BURN BRIDGES",h:"Permanently damage a relationship"},
-      {w:"DONT BEAT A DEAD HORSE",h:"Stop pursuing something that has already failed"},
-      {w:"FIT AS A FIDDLE",h:"In perfect health and very energetic"},
-      {w:"GET A TASTE OF YOUR OWN MEDICINE",h:"Experience the same bad things you cause others"},
-      {w:"GOT OUT OF BED ON THE WRONG SIDE",h:"Started the day in a very bad mood"},
-      {w:"HANG IN THERE",h:"Keep going despite difficulties"},
-      {w:"HIT THE GROUND RUNNING",h:"Start something quickly and energetically"},
-      {w:"HOLD YOUR HORSES",h:"Wait or slow down"},
-      {w:"IF IT AINT BROKE DONT FIX IT",h:"Don't change something that is already working"},
-      {w:"IN OVER YOUR HEAD",h:"Involved in something too difficult to handle"},
-      {w:"JUMP THE GUN",h:"Act before the right time"},
-      {w:"KEEP A STIFF UPPER LIP",h:"Remain calm and stoic during difficulty"},
-      {w:"KICK THE BUCKET",h:"Die"},
-      {w:"KNOW THE ROPES",h:"Be experienced and familiar with a job"},
-      {w:"LEAVE WELL ENOUGH ALONE",h:"Don't try to improve something that is already okay"},
-      {w:"LET SLEEPING DOGS LIE",h:"Don't bring up old problems"},
-      {w:"LIGHT AT THE END OF THE TUNNEL",h:"Hope that a difficult situation will improve"},
-      {w:"MAKE ENDS MEET",h:"Have just enough money to live on"},
-      {w:"NO ROOM TO SWING A CAT",h:"A very small, cramped space"},
-      {w:"OFF THE TOP OF YOUR HEAD",h:"Without thinking carefully"},
-      {w:"OUT OF THE BLUE",h:"Happening suddenly and unexpectedly"},
-      {w:"OVER THE MOON",h:"Extremely happy and delighted"},
-      {w:"PASS THE BUCK",h:"Shift responsibility to someone else"},
-      {w:"POUR OIL ON TROUBLED WATERS",h:"Calm down a tense situation"},
-      {w:"PUT YOUR FOOT IN YOUR MOUTH",h:"Say something embarrassing or inappropriate"},
-      {w:"READ BETWEEN THE LINES",h:"Find meaning that is not directly stated"},
-      {w:"RIDE ROUGHSHOD OVER",h:"Treat someone with disregard and force"},
-      {w:"RUN RINGS AROUND",h:"Perform far better than someone else"},
-      {w:"SAVE FOR A RAINY DAY",h:"Keep something for when it is needed in the future"},
-      {w:"SHOOT THE BREEZE",h:"Chat informally about nothing important"},
-      {w:"SOUR GRAPES",h:"Pretending not to want something you can't have"},
-      {w:"STRAIGHT FROM THE HORSE'S MOUTH",h:"Information from the original and most reliable source"},
-      {w:"TAKE THE BULL BY THE HORNS",h:"Tackle a difficult problem directly and courageously"},
-      {w:"THE WRITING IS ON THE WALL",h:"Signs indicating that something bad is going to happen"},
-      {w:"THROW CAUTION TO THE WIND",h:"Take a risk without worrying about the consequences"},
-      {w:"TOUCH AND GO",h:"A situation with an uncertain outcome"},
-      {w:"UNDER THE TABLE",h:"Doing something secretly or illegally"},
-      {w:"WALK ON EGGSHELLS",h:"Be very careful not to upset someone"},
-      {w:"WILD GOOSE CHASE",h:"A search that has no chance of succeeding"},
-      {w:"WIN HANDS DOWN",h:"Win very easily without much effort"},
-      {w:"WORTH ITS WEIGHT IN GOLD",h:"Very valuable or extremely useful"},
-      {w:"YOU REAP WHAT YOU SOW",h:"You get back what you put in"},
-      {w:"BURNING THE CANDLE AT BOTH ENDS",h:"Working extremely hard and not getting enough rest"},
-      {w:"CROSS THAT BRIDGE WHEN YOU COME TO IT",h:"Deal with a problem only when it actually happens"},
-      {w:"DON'T BITE THE HAND THAT FEEDS YOU",h:"Don't be ungrateful to those who help you"},
-      {w:"GET A SECOND WIND",h:"Find new energy after feeling tired"},
-      {w:"GO THE EXTRA MILE",h:"Put in more effort than required"},
-      {w:"HAVE A CHIP ON YOUR SHOULDER",h:"Be resentful or easily angered"},
-      {w:"HIT THE BOOKS",h:"Study very hard"},
-      {w:"IN THE SAME BOAT",h:"Facing the same problems as someone else"},
-      {w:"JUMP TO CONCLUSIONS",h:"Make hasty judgments without enough information"},
-      {w:"KEEP YOUR NOSE TO THE GRINDSTONE",h:"Work hard continuously without stopping"},
-      {w:"KNOCK IT OUT OF THE PARK",h:"Do something extremely well"},
-      {w:"LET YOUR HAIR DOWN",h:"Relax and behave more freely"},
-      {w:"LIKE A FISH OUT OF WATER",h:"Feeling awkward and uncomfortable"},
-      {w:"LOOK LIKE A MILLION DOLLARS",h:"Look very impressive and attractive"},
-      {w:"MAKE HAY WHILE THE SUN SHINES",h:"Make the most of an opportunity while it lasts"},
-      {w:"MIND YOUR OWN BEESWAX",h:"Don't interfere in other people's business"},
-      {w:"NOT MY CUP OF TEA",h:"Something that is not to your liking"},
-      {w:"ON THIN ICE",h:"In a risky or precarious situation"},
-      {w:"OUT OF THE FRYING PAN INTO THE FIRE",h:"Going from a bad situation to a worse one"},
-      {w:"PLAY IT BY EAR",h:"Handle a situation as it develops without planning"},
-      {w:"PUT YOUR BEST FOOT FORWARD",h:"Make the best impression you can"},
-      {w:"ROCK THE BOAT",h:"Cause trouble or upset a stable situation"},
-      {w:"SLEEP ON IT",h:"Think carefully about a decision before deciding"},
-      {w:"SMELL A RAT",h:"Suspect that something dishonest is going on"},
-      {w:"SPEAK OF THE DEVIL",h:"Said when someone appears just as they were being mentioned"},
-      {w:"STEP UP TO THE PLATE",h:"Accept responsibility for a difficult challenge"},
-      {w:"TAKE A RAIN CHECK",h:"Decline but accept to do something at a later time"},
-      {w:"THE TIP OF THE ICEBERG",h:"A small visible part of a much bigger problem"},
-      {w:"UNDER THE THUMB",h:"Being controlled by another person"},
-      {w:"WEAR YOUR HEART ON YOUR SLEEVE",h:"Show your emotions openly without hiding them"},
-      {w:"WRAP YOUR HEAD AROUND",h:"Understand something complex"},
-      {w:"YOUR GUESS IS AS GOOD AS MINE",h:"Neither of us knows the answer"},
-    ]
+const DB={
+  words:{label:"Words",hint_label:"This word means:",items:[
+    {w:"ADVENTURE",h:"An exciting journey or experience"},{w:"BALLOON",h:"A colorful inflatable object"},{w:"BUTTERFLY",h:"A colorful flying insect"},{w:"CALENDAR",h:"Shows all the days of the year"},{w:"DIAMOND",h:"A very precious gemstone"},{w:"ELEPHANT",h:"The largest land animal"},{w:"FANTASY",h:"An imaginary or magical world"},{w:"GIRAFFE",h:"The tallest animal with a long neck"},{w:"HARMONY",h:"When things work well together"},{w:"INVENTOR",h:"Someone who creates new things"},{w:"JUNGLE",h:"A dense tropical forest"},{w:"KANGAROO",h:"An Australian marsupial that hops"},{w:"LANTERN",h:"A portable light source"},{w:"MOUNTAIN",h:"A very large hill made of rock"},{w:"NOTEBOOK",h:"A book with blank pages for writing"},{w:"OBSTACLE",h:"Something that gets in your way"},{w:"PENGUIN",h:"A flightless bird from Antarctica"},{w:"QUESTION",h:"Something you ask to get information"},{w:"RAINBOW",h:"Colorful arc that appears after rain"},{w:"SANDWICH",h:"Food between two slices of bread"},{w:"TELESCOPE",h:"A tool to see faraway objects"},{w:"UMBRELLA",h:"Keeps you dry when it rains"},{w:"VOLCANO",h:"A mountain that can erupt with lava"},{w:"WATERFALL",h:"Water falling from a great height"},{w:"XYLOPHONE",h:"A musical instrument you hit with mallets"},{w:"YESTERDAY",h:"The day before today"},{w:"ZEBRA",h:"A black and white striped animal"},{w:"ASTRONAUT",h:"A person who travels to space"},{w:"BLIZZARD",h:"A very heavy snowstorm"},{w:"CHOCOLATE",h:"A sweet brown food made from cocoa"},{w:"DINOSAUR",h:"An ancient extinct reptile"},{w:"ENORMOUS",h:"Extremely large in size"},{w:"FLAMINGO",h:"A pink bird that stands on one leg"},{w:"GLACIER",h:"A large slow-moving mass of ice"},{w:"HURRICANE",h:"An extremely powerful tropical storm"},{w:"IGLOO",h:"A dome-shaped house made of snow"},{w:"JELLYFISH",h:"A soft sea creature with tentacles"},{w:"KINGDOM",h:"A land ruled by a king or queen"},{w:"LABYRINTH",h:"A complex maze"},{w:"MERMAID",h:"A mythical half-human, half-fish being"},{w:"NOCTURNAL",h:"Active during the night"},{w:"OLYMPICS",h:"The biggest international sports event"},{w:"PYRAMID",h:"A structure with a square base and pointed top"},{w:"QUICKSAND",h:"Loose wet sand that things sink into"},{w:"REPTILE",h:"Cold-blooded scaly animal like a snake"},{w:"SKELETON",h:"The bony framework inside a body"},{w:"TORNADO",h:"A fast-spinning column of air"},{w:"UNIVERSE",h:"All of space and everything in it"},{w:"VICTORY",h:"Winning a competition or battle"},{w:"WIZARD",h:"A person who practises magic"}
+  ]},
+  songs:{label:"Song Titles",hint_label:"Song hint:",items:[
+    {w:"SHAPE OF YOU",h:"Ed Sheeran's biggest hit"},{w:"HAPPY",h:"Pharrell Williams song from Despicable Me 2"},{w:"BOHEMIAN RHAPSODY",h:"Queen's epic rock opera from 1975"},{w:"LET IT GO",h:"Famous song from Disney's Frozen"},{w:"THRILLER",h:"Michael Jackson's Halloween classic"},{w:"IMAGINE",h:"John Lennon's song about world peace"},{w:"ROLLING IN THE DEEP",h:"Adele's powerful breakup anthem"},{w:"HELLO",h:"Adele's famous song starting with that greeting"},{w:"BLINDING LIGHTS",h:"The Weeknd's 80s-inspired pop hit"},{w:"UPTOWN FUNK",h:"Bruno Mars and Mark Ronson's funky hit"},{w:"SOMEONE LIKE YOU",h:"Adele's heartbreak piano ballad"},{w:"BELIEVER",h:"Imagine Dragons song about rising from pain"},{w:"COUNTING STARS",h:"OneRepublic's song about chasing dreams"},{w:"STAY WITH ME",h:"Sam Smith's soulful debut single"},{w:"PHOTOGRAPH",h:"Ed Sheeran's nostalgic love song"},{w:"DESPACITO",h:"Luis Fonsi's massive Spanish-language hit"},{w:"OLD TOWN ROAD",h:"Lil Nas X's country-rap crossover smash"},{w:"SHALLOW",h:"Lady Gaga and Bradley Cooper's Oscar-winning duet"},{w:"BAD GUY",h:"Billie Eilish's whispery debut hit"},{w:"DANCE MONKEY",h:"Tones and I's viral Australian pop hit"},{w:"WATERMELON SUGAR",h:"Harry Styles' summer love song"},{w:"LEVITATING",h:"Dua Lipa's disco-pop banger"},{w:"DYNAMITE",h:"BTS's first all-English pop track"},{w:"DRIVERS LICENSE",h:"Olivia Rodrigo's heartbreak debut"},{w:"ANTI HERO",h:"Taylor Swift's introspective Midnights single"},{w:"FLOWERS",h:"Miley Cyrus's empowering self-love anthem"},{w:"CRUEL SUMMER",h:"Taylor Swift's pop banger from Lover"},{w:"SHAKE IT OFF",h:"Taylor Swift's carefree anthem about ignoring haters"},{w:"LOVE STORY",h:"Taylor Swift's Romeo and Juliet inspired song"},{w:"BABY",h:"Justin Bieber's debut hit"}
+  ]},
+  countries:{label:"Countries",hint_label:"Country hint:",items:[
+    {w:"AFGHANISTAN",h:"A landlocked country in Central Asia"},{w:"AUSTRALIA",h:"The world's largest island and a continent"},{w:"BRAZIL",h:"The largest country in South America"},{w:"CANADA",h:"The world's second largest country by area"},{w:"CHINA",h:"The world's most populous country"},{w:"EGYPT",h:"The land of pyramids and pharaohs"},{w:"FRANCE",h:"The most visited country in the world"},{w:"GERMANY",h:"A central European country known for engineering"},{w:"INDIA",h:"The world's most populous democracy"},{w:"INDONESIA",h:"An archipelago with the most islands in the world"},{w:"ITALY",h:"A boot-shaped country known for pizza and art"},{w:"JAPAN",h:"An island nation known for technology and sushi"},{w:"KENYA",h:"An East African country famous for wildlife safaris"},{w:"MEXICO",h:"A North American country known for tacos"},{w:"NIGERIA",h:"The most populous country in Africa"},{w:"NORWAY",h:"A Scandinavian country known for fjords"},{w:"PERU",h:"A South American country home to Machu Picchu"},{w:"PHILIPPINES",h:"An archipelago nation in Southeast Asia"},{w:"RUSSIA",h:"The world's largest country by area"},{w:"SOUTH AFRICA",h:"A country with three capitals at the tip of Africa"},{w:"SPAIN",h:"A European country known for flamenco"},{w:"SWEDEN",h:"A Scandinavian country known for IKEA and ABBA"},{w:"THAILAND",h:"A Southeast Asian country known for temples"},{w:"UKRAINE",h:"The largest country entirely within Europe"},{w:"UNITED KINGDOM",h:"Includes England, Scotland, Wales, and Northern Ireland"},{w:"UNITED STATES",h:"The most powerful nation with 50 states"},{w:"VIETNAM",h:"A Southeast Asian country known for its cuisine"},{w:"ZIMBABWE",h:"A Southern African country"}
+  ]},
+  capitals:{label:"Capital Cities",hint_label:"Capital of:",items:[
+    {w:"KABUL",h:"Capital of Afghanistan"},{w:"CANBERRA",h:"Capital of Australia"},{w:"BEIJING",h:"Capital of China"},{w:"OTTAWA",h:"Capital of Canada"},{w:"PARIS",h:"Capital of France"},{w:"BERLIN",h:"Capital of Germany"},{w:"ATHENS",h:"Capital of Greece"},{w:"BUDAPEST",h:"Capital of Hungary"},{w:"REYKJAVIK",h:"Capital of Iceland"},{w:"NEW DELHI",h:"Capital of India"},{w:"JAKARTA",h:"Capital of Indonesia"},{w:"ROME",h:"Capital of Italy"},{w:"TOKYO",h:"Capital of Japan"},{w:"NAIROBI",h:"Capital of Kenya"},{w:"MEXICO CITY",h:"Capital of Mexico"},{w:"AMSTERDAM",h:"Capital of the Netherlands"},{w:"WELLINGTON",h:"Capital of New Zealand"},{w:"OSLO",h:"Capital of Norway"},{w:"MANILA",h:"Capital of the Philippines"},{w:"WARSAW",h:"Capital of Poland"},{w:"LISBON",h:"Capital of Portugal"},{w:"MOSCOW",h:"Capital of Russia"},{w:"SEOUL",h:"Capital of South Korea"},{w:"MADRID",h:"Capital of Spain"},{w:"STOCKHOLM",h:"Capital of Sweden"},{w:"BERN",h:"Capital of Switzerland"},{w:"ANKARA",h:"Capital of Turkey"},{w:"KYIV",h:"Capital of Ukraine"},{w:"LONDON",h:"Capital of the United Kingdom"},{w:"WASHINGTON DC",h:"Capital of the United States"},{w:"HANOI",h:"Capital of Vietnam"}
+  ]},
+  cars:{label:"Car Brands",hint_label:"Car brand hint:",items:[
+    {w:"TOYOTA",h:"Japan's biggest and best-selling car brand"},{w:"HONDA",h:"Japanese brand famous for the Civic"},{w:"FORD",h:"American brand that made the Mustang famous"},{w:"CHEVROLET",h:"American brand known as Chevy"},{w:"VOLKSWAGEN",h:"German brand meaning People's Car"},{w:"BMW",h:"German brand known as The Ultimate Driving Machine"},{w:"MERCEDES",h:"German luxury brand with a star logo"},{w:"AUDI",h:"German luxury brand with four rings logo"},{w:"FERRARI",h:"Italian luxury sports car with a prancing horse"},{w:"LAMBORGHINI",h:"Italian supercar brand"},{w:"PORSCHE",h:"German sports car famous for the 911"},{w:"TESLA",h:"American electric car brand"},{w:"HYUNDAI",h:"South Korean brand known for quality"},{w:"SUBARU",h:"Japanese brand famous for all-wheel drive"},{w:"MAZDA",h:"Japanese brand known for Zoom-Zoom"},{w:"JEEP",h:"American brand famous for off-road vehicles"},{w:"VOLVO",h:"Swedish brand known for safety"},{w:"ALFA ROMEO",h:"Italian brand with a Milan cross logo"},{w:"PEUGEOT",h:"French brand with a lion logo"},{w:"RENAULT",h:"French brand known for the Clio"},{w:"BUGATTI",h:"French hypercar brand with the Chiron"},{w:"ASTON MARTIN",h:"British luxury brand, James Bond's car"},{w:"JAGUAR",h:"British luxury brand with a leaping cat"},{w:"LAND ROVER",h:"British brand for rugged off-road vehicles"},{w:"MCLAREN",h:"British supercar brand from Formula 1"},{w:"LEXUS",h:"Japanese luxury brand owned by Toyota"},{w:"GENESIS",h:"South Korean luxury brand from Hyundai"},{w:"RIVIAN",h:"American electric truck brand"}
+  ]},
+  events:{label:"World Events",hint_label:"Event hint:",items:[
+    {w:"WORLD WAR ONE",h:"The Great War fought from 1914 to 1918"},{w:"WORLD WAR TWO",h:"The deadliest conflict in history"},{w:"MOON LANDING",h:"Apollo 11 crew walked on the Moon in 1969"},{w:"FRENCH REVOLUTION",h:"The overthrow of the French monarchy in 1789"},{w:"INDUSTRIAL REVOLUTION",h:"The shift to machine manufacturing"},{w:"COLD WAR",h:"Political tension between USA and USSR"},{w:"PEARL HARBOR",h:"Japan's surprise attack on the US Navy in 1941"},{w:"CIVIL RIGHTS MOVEMENT",h:"African Americans fighting for equality"},{w:"HOLOCAUST",h:"The genocide of six million Jewish people"},{w:"SEPTEMBER ELEVEN",h:"Terrorist attacks on the US in 2001"},{w:"CHERNOBYL DISASTER",h:"A catastrophic nuclear accident in 1986"},{w:"GREAT DEPRESSION",h:"The global economic downturn from 1929"},{w:"SPUTNIK LAUNCH",h:"USSR launched the first Earth satellite in 1957"},{w:"CUBAN MISSILE CRISIS",h:"A nuclear standoff in 1962"},{w:"FALL OF BERLIN WALL",h:"German reunification symbol in 1989"},{w:"DISSOLUTION OF USSR",h:"The breakup of the Soviet Union in 1991"},{w:"COVID PANDEMIC",h:"The global COVID-19 health crisis from 2020"},{w:"BREXIT",h:"The UK voted to leave the European Union in 2016"},{w:"UKRAINE INVASION",h:"Russia invaded Ukraine in February 2022"},{w:"PARIS OLYMPICS",h:"France hosted the Summer Olympic Games in 2024"}
+  ]},
+  people:{label:"Famous People",hint_label:"Person hint:",items:[
+    {w:"ALBERT EINSTEIN",h:"Physicist who developed the theory of relativity"},{w:"MARIE CURIE",h:"Scientist who discovered radium and polonium"},{w:"ISAAC NEWTON",h:"Physicist who described gravity"},{w:"CHARLES DARWIN",h:"Naturalist who developed the theory of evolution"},{w:"NIKOLA TESLA",h:"Inventor who pioneered alternating current"},{w:"STEPHEN HAWKING",h:"Physicist famous for black hole research"},{w:"NAPOLEON BONAPARTE",h:"French emperor who conquered much of Europe"},{w:"JULIUS CAESAR",h:"Roman general assassinated on the Ides of March"},{w:"CLEOPATRA",h:"The last active ruler of ancient Egypt"},{w:"ALEXANDER THE GREAT",h:"Ancient Macedonian king who built a massive empire"},{w:"NELSON MANDELA",h:"First Black president of South Africa"},{w:"MARTIN LUTHER KING",h:"Civil rights leader with the I Have a Dream speech"},{w:"MAHATMA GANDHI",h:"Indian independence leader of nonviolent resistance"},{w:"WINSTON CHURCHILL",h:"British prime minister in World War Two"},{w:"GEORGE WASHINGTON",h:"First president of the United States"},{w:"ABRAHAM LINCOLN",h:"US president who abolished slavery"},{w:"WILLIAM SHAKESPEARE",h:"Playwright who wrote Hamlet and Romeo and Juliet"},{w:"LEONARDO DA VINCI",h:"Renaissance polymath who painted the Mona Lisa"},{w:"MICHAEL JACKSON",h:"The King of Pop known for the moonwalk"},{w:"TAYLOR SWIFT",h:"Pop star who writes her own songs"},{w:"ELON MUSK",h:"Entrepreneur behind Tesla and SpaceX"},{w:"BILL GATES",h:"Co-founder of Microsoft"},{w:"NEIL ARMSTRONG",h:"First human to walk on the Moon"},{w:"USAIN BOLT",h:"Jamaican sprinter and fastest man in history"},{w:"MUHAMMAD ALI",h:"Boxing world champion known as The Greatest"},{w:"LIONEL MESSI",h:"Argentine football legend"},{w:"SERENA WILLIAMS",h:"One of the greatest female tennis players ever"}
+  ]},
+  phrases:{label:"Phrases",hint_label:"Phrase hint:",items:[
+    {w:"BREAK A LEG",h:"Good luck! Said before a performance"},{w:"UNDER THE WEATHER",h:"Feeling sick or unwell"},{w:"PIECE OF CAKE",h:"Something very easy to do"},{w:"ONCE IN A BLUE MOON",h:"Something that happens very rarely"},{w:"BITE THE BULLET",h:"Endure a painful situation bravely"},{w:"HIT THE NAIL ON THE HEAD",h:"Be exactly right about something"},{w:"BURN THE MIDNIGHT OIL",h:"Work late into the night"},{w:"COST AN ARM AND A LEG",h:"Very expensive"},{w:"BACK TO THE DRAWING BOARD",h:"Start again from the beginning"},{w:"EVERY CLOUD HAS A SILVER LINING",h:"There is something positive in every bad situation"},{w:"DONT JUDGE A BOOK BY ITS COVER",h:"Don't judge based on appearances"},{w:"THE EARLY BIRD CATCHES THE WORM",h:"Acting early gives you an advantage"},{w:"BETTER LATE THAN NEVER",h:"It's better to do something late than not at all"},{w:"KILL TWO BIRDS WITH ONE STONE",h:"Accomplish two things with one action"},{w:"RAINING CATS AND DOGS",h:"It is raining very heavily"},{w:"SPILL THE BEANS",h:"Reveal secret information"},{w:"LET THE CAT OUT OF THE BAG",h:"Reveal a secret by mistake"},{w:"BITE OFF MORE THAN YOU CAN CHEW",h:"Take on more than you can handle"},{w:"OVER THE MOON",h:"Extremely happy and delighted"},{w:"HIT THE SACK",h:"Go to bed and sleep"},{w:"TIME FLIES",h:"Time passes very quickly"},{w:"WHEN PIGS FLY",h:"Something that will never happen"},{w:"THROW IN THE TOWEL",h:"Give up on something"},{w:"KEEP YOUR FINGERS CROSSED",h:"Hope that something goes well"}
+  ]}
+};
+DB.all={label:"Random Mix",hint_label:"Hint:",items:Object.values(DB).filter(v=>v.items).flatMap(v=>v.items)};
+
+const MAX_WRONG=10;
+let state={category:'',word:'',hint:'',guessed:[],wrongGuesses:[],hintsLeft:10,score:0,streak:0,usedIndices:[],gameOver:false};
+
+/* AUDIO */
+const AC=new (window.AudioContext||window.webkitAudioContext)();
+function beep(freq,dur,type='sine',vol=.25){
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.connect(g);g.connect(AC.destination);
+  o.type=type;o.frequency.setValueAtTime(freq,AC.currentTime);
+  g.gain.setValueAtTime(vol,AC.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+dur);
+  o.start();o.stop(AC.currentTime+dur);
+}
+function playCorrect(){beep(523,.08,'sine',.2);setTimeout(()=>beep(659,.08,'sine',.2),80);setTimeout(()=>beep(784,.15,'sine',.2),160);}
+function playWrong(){beep(220,.12,'sawtooth',.15);setTimeout(()=>beep(180,.2,'sawtooth',.12),100);}
+function playWin(){
+  const notes=[523,659,784,1047];
+  notes.forEach((f,i)=>setTimeout(()=>beep(f,.18,'sine',.3),i*100));
+  setTimeout(()=>{beep(784,.08,'sine',.2);setTimeout(()=>beep(1047,.4,'sine',.25),80);},500);
+}
+function playLose(){
+  beep(400,.15,'sawtooth',.2);setTimeout(()=>beep(300,.15,'sawtooth',.2),150);setTimeout(()=>beep(200,.5,'sawtooth',.25),300);
+}
+function playKeyClick(){beep(800,.04,'sine',.08);}
+
+/* CONFETTI */
+const CONF_COLS=['#FF6B9D','#FFD600','#27AE60','#3498DB','#FF8C42','#9B59B6','#1ABC9C'];
+function launchConfetti(){
+  const c=document.getElementById('confetti');c.innerHTML='';
+  for(let i=0;i<60;i++){
+    const p=document.createElement('div');p.className='cb-p';
+    p.style.cssText=`left:${Math.random()*100}%;top:-10px;background:${CONF_COLS[i%CONF_COLS.length]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${.8+Math.random()*.8}s;animation-delay:${Math.random()*.4}s;`;
+    c.appendChild(p);
   }
-};
+}
 
-// Build "all" category
-DB.all = {
-  label:"Random Mix",
-  hint_label:"Hint:",
-  items: Object.values(DB).filter(v=>v.items).flatMap(v=>v.items)
-};
-
-// ============================================================
-// GAME STATE
-// ============================================================
-const MAX_WRONG = 7;
-let state = {
-  category:'', word:'', hint:'',
-  guessed:[], wrongGuesses:[], hintsLeft:3,
-  hintRevealed:false, score:0, streak:0,
-  usedIndices:[], gameOver:false
-};
-
-function pickWord(cat) {
-  const pool = DB[cat].items;
-  // Avoid repeats where possible
-  if (state.usedIndices.length >= pool.length) state.usedIndices = [];
+function pickWord(cat){
+  const pool=DB[cat].items;
+  if(state.usedIndices.length>=pool.length)state.usedIndices=[];
   let idx;
-  do { idx = Math.floor(Math.random() * pool.length); }
-  while (state.usedIndices.includes(idx));
+  do{idx=Math.floor(Math.random()*pool.length);}while(state.usedIndices.includes(idx));
   state.usedIndices.push(idx);
   return pool[idx];
 }
 
-// ============================================================
-// SCREEN MANAGEMENT
-// ============================================================
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function goHome(){showScreen('home');state.usedIndices=[];state.score=0;state.streak=0;}
+
+function startGame(cat){
+  if(AC.state==='suspended')AC.resume();
+  state.category=cat;state.hintsLeft=10;newRound();showScreen('game');
 }
 
-function goHome() {
-  showScreen('home');
-  state.usedIndices = [];
-  state.score = 0;
-  state.streak = 0;
-}
-
-// ============================================================
-// START GAME
-// ============================================================
-function startGame(cat) {
-  state.category = cat;
-  state.hintsLeft = 3;
-  newRound();
-  showScreen('game');
-}
-
-function newRound() {
-  const item = pickWord(state.category);
-  state.word = item.w.toUpperCase();
-  state.hint = item.h;
-  state.guessed = [];
-  state.wrongGuesses = [];
-  state.hintRevealed = false;
-  state.gameOver = false;
-
-  document.getElementById('cat-tag').textContent = DB[state.category].label;
-  document.getElementById('score-display').textContent = state.score;
-  document.getElementById('streak-display').textContent = state.streak;
+function newRound(){
+  const item=pickWord(state.category);
+  state.word=item.w.toUpperCase();state.hint=item.h;
+  state.guessed=[];state.wrongGuesses=[];state.gameOver=false;
+  document.getElementById('cat-tag').textContent=DB[state.category].label;
+  document.getElementById('score-display').textContent=state.score;
+  document.getElementById('streak-display').textContent=state.streak;
   document.getElementById('hint-text').style.display='none';
-  document.getElementById('hint-text').textContent='';
   document.getElementById('result-overlay').classList.remove('show');
-  document.getElementById('speech-bubble').classList.remove('visible');
-
-  const hintBtn = document.getElementById('hint-btn');
-  hintBtn.disabled = state.hintsLeft === 0;
-  document.getElementById('hints-left').textContent = `(${state.hintsLeft} left)`;
-
-  renderLives();
-  renderWord();
-  renderWrongLetters();
-  renderKeyboard();
+  const hb=document.getElementById('hint-btn');
+  hb.disabled=state.hintsLeft===0;
+  document.getElementById('hints-left').textContent=`(${state.hintsLeft} left)`;
+  renderHearts();renderWord();renderWrong();renderKeyboard();
 }
 
-// ============================================================
-// RENDER FUNCTIONS
-// ============================================================
-function renderLives() {
-  const row = document.getElementById('lives-row');
-  row.innerHTML = '';
-  for (let i=0;i<MAX_WRONG;i++) {
-    const h = document.createElement('div');
-    h.className = 'life-heart' + (i >= (MAX_WRONG - state.wrongGuesses.length) ? ' lost' : '');
-    h.textContent = '❤️';
+function renderHearts(){
+  const row=document.getElementById('hearts-row');
+  row.innerHTML='';
+  const remaining=MAX_WRONG-state.wrongGuesses.length;
+  document.getElementById('lives-label').textContent=remaining+' '+(remaining===1?'life':'lives')+' left';
+  for(let i=0;i<MAX_WRONG;i++){
+    const h=document.createElement('div');
+    h.className='heart'+(i>=remaining?' lost':'');
+    h.id='heart-'+i;h.textContent='❤️';
     row.appendChild(h);
   }
 }
 
-function renderWord() {
-  const row = document.getElementById('word-row');
-  row.innerHTML = '';
+function renderWord(){
+  const row=document.getElementById('word-row');row.innerHTML='';
   [...state.word].forEach(ch=>{
-    const box = document.createElement('div');
-    if (ch===' ') {
-      box.className='letter-box space-gap';
-    } else {
-      box.className='letter-box' + (state.guessed.includes(ch) ? ' revealed' : '');
-      box.textContent = state.guessed.includes(ch) ? ch : '';
-    }
-    row.appendChild(box);
+    const b=document.createElement('div');
+    if(ch===' '){b.className='lb sp';}
+    else{b.className='lb'+(state.guessed.includes(ch)?' rev':'');b.textContent=state.guessed.includes(ch)?ch:'';}
+    row.appendChild(b);
   });
 }
 
-function renderWrongLetters() {
-  const area = document.getElementById('wrong-letters');
-  area.innerHTML = '';
-  state.wrongGuesses.forEach(l=>{
-    const chip = document.createElement('div');
-    chip.className='wrong-letter-chip';
-    chip.textContent=l;
-    area.appendChild(chip);
-  });
+function renderWrong(){
+  const a=document.getElementById('wrong-letters');a.innerHTML='';
+  state.wrongGuesses.forEach(l=>{const c=document.createElement('div');c.className='wc';c.textContent=l;a.appendChild(c);});
 }
 
-function renderKeyboard() {
-  const rows=[
-    ['Q','W','E','R','T','Y','U','I','O','P'],
-    ['A','S','D','F','G','H','J','K','L'],
-    ['Z','X','C','V','B','N','M']
-  ];
-  const area = document.getElementById('keyboard-area');
-  area.innerHTML='';
+function renderKeyboard(){
+  const rows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['Z','X','C','V','B','N','M']];
+  const area=document.getElementById('keyboard-area');area.innerHTML='';
   rows.forEach(row=>{
-    const rowDiv=document.createElement('div');
-    rowDiv.className='key-row';
+    const rd=document.createElement('div');rd.className='key-row';
     row.forEach(letter=>{
-      const btn=document.createElement('button');
-      btn.className='key';
-      btn.textContent=letter;
-      btn.id='key-'+letter;
-      const inWord=state.word.replace(/ /g,'').includes(letter);
-      const guessed=state.guessed.includes(letter);
-      const wrong=state.wrongGuesses.includes(letter);
-      if(guessed){btn.classList.add('used-correct');btn.disabled=true;}
-      else if(wrong){btn.classList.add('used-wrong');btn.disabled=true;}
+      const btn=document.createElement('button');btn.className='key';btn.textContent=letter;btn.id='key-'+letter;
+      const guessed=state.guessed.includes(letter),wrong=state.wrongGuesses.includes(letter);
+      if(guessed){btn.classList.add('uc');btn.disabled=true;}
+      else if(wrong){btn.classList.add('uw');btn.disabled=true;}
       else{btn.onclick=()=>guess(letter);}
-      rowDiv.appendChild(btn);
+      rd.appendChild(btn);
     });
-    area.appendChild(rowDiv);
+    area.appendChild(rd);
   });
 }
 
-// ============================================================
-// GUESS LOGIC
-// ============================================================
-function guess(letter) {
-  if (state.gameOver) return;
-  letter = letter.toUpperCase();
-  if (state.guessed.includes(letter) || state.wrongGuesses.includes(letter)) return;
-
-  const btn = document.getElementById('key-'+letter);
-
-  if (state.word.includes(letter)) {
+function guess(letter){
+  if(state.gameOver)return;
+  letter=letter.toUpperCase();
+  if(state.guessed.includes(letter)||state.wrongGuesses.includes(letter))return;
+  if(AC.state==='suspended')AC.resume();
+  const btn=document.getElementById('key-'+letter);
+  if(state.word.includes(letter)){
     state.guessed.push(letter);
-    btn.classList.add('used-correct');
-    btn.disabled=true;
+    btn.classList.add('uc');btn.disabled=true;
+    playCorrect();
     renderWord();
-    // Highlight newly revealed boxes
-    const boxes=[...document.getElementById('word-row').children];
-    [...state.word].forEach((ch,i)=>{ if(ch===letter) boxes[i].classList.add('revealed'); });
     checkWin();
   } else {
     state.wrongGuesses.push(letter);
-    btn.classList.add('used-wrong');
-    btn.disabled=true;
-    renderLives();
-    renderWrongLetters();
-    showSpeechBubble(getSadQuip());
+    btn.classList.add('uw');btn.disabled=true;
+    playWrong();
+    const remaining=MAX_WRONG-state.wrongGuesses.length;
+    renderHearts();
+    if(remaining>=0&&remaining<MAX_WRONG){
+      const hEl=document.getElementById('heart-'+remaining);
+      if(hEl)hEl.classList.add('shake');
+    }
+    renderWrong();
     checkLose();
   }
   btn.onclick=null;
 }
 
-function checkWin() {
+function checkWin(){
   const letters=[...new Set(state.word.replace(/ /g,'').split(''))];
-  if (letters.every(l=>state.guessed.includes(l))) {
+  if(letters.every(l=>state.guessed.includes(l))){
     state.gameOver=true;
-    state.score += 10 + (state.hintsLeft * 2) + Math.max(0,(MAX_WRONG-state.wrongGuesses.length)*3);
+    state.score+=10+(state.hintsLeft*2)+Math.max(0,(MAX_WRONG-state.wrongGuesses.length)*3);
     state.streak++;
-    setTimeout(()=>showResult(true),700);
+    playWin();
+    setTimeout(()=>showResult(true),600);
   }
 }
 
-function checkLose() {
-  if (state.wrongGuesses.length >= MAX_WRONG) {
-    state.gameOver=true;
-    state.streak=0;
+function checkLose(){
+  if(state.wrongGuesses.length>=MAX_WRONG){
+    state.gameOver=true;state.streak=0;
+    playLose();
     setTimeout(()=>showResult(false),600);
   }
 }
 
-// ============================================================
-// HINT
-// ============================================================
-function useHint() {
-  if (state.hintsLeft<=0) return;
+function useHint(){
+  if(state.hintsLeft<=0)return;
   state.hintsLeft--;
-  state.hintRevealed=true;
   document.getElementById('hints-left').textContent=`(${state.hintsLeft} left)`;
-  if (state.hintsLeft===0) document.getElementById('hint-btn').disabled=true;
-  const hintArea=document.getElementById('hint-text');
-  hintArea.textContent=`💡 ${DB[state.category].hint_label || 'Hint:'} ${state.hint}`;
-  hintArea.style.display='block';
+  if(state.hintsLeft===0)document.getElementById('hint-btn').disabled=true;
+  const ht=document.getElementById('hint-text');
+  ht.textContent=`💡 ${DB[state.category].hint_label||'Hint:'} ${state.hint}`;
+  ht.style.display='block';
+  beep(440,.1,'sine',.15);setTimeout(()=>beep(550,.15,'sine',.15),100);
 }
 
-// ============================================================
-// SPEECH BUBBLE
-// ============================================================
-const sadQuips=["Oops!","Not that one!","Try again!","Hmm...","Close!","Nope!","Uh oh!"];
-function getSadQuip(){return sadQuips[Math.floor(Math.random()*sadQuips.length)];}
-let bubbleTimer;
-function showSpeechBubble(msg){
-  const b=document.getElementById('speech-bubble');
-  b.textContent=msg; b.classList.add('visible');
-  clearTimeout(bubbleTimer);
-  bubbleTimer=setTimeout(()=>b.classList.remove('visible'),1500);
+function showResult(won){
+  const ov=document.getElementById('result-overlay');
+  document.getElementById('res-emoji').textContent=won?'🎉':'😢';
+  document.getElementById('res-title').textContent=won?'You Got It!':'Oh No!';
+  document.getElementById('res-word').textContent=won?`✅ ${state.word}`:`💀 ${state.word}`;
+  document.getElementById('res-score').textContent=won?`Score: ${state.score} pts  |  Streak: ${state.streak} 🔥`:`Score: ${state.score}  |  Streak reset`;
+  const bg=document.getElementById('res-bg');
+  bg.className='res-bg '+(won?'win-bg':'lose-bg');
+  ov.classList.add('show');
+  if(won)launchConfetti();
 }
 
-// ============================================================
-// RESULT OVERLAY
-// ============================================================
-function showResult(won) {
-  const overlay=document.getElementById('result-overlay');
-  document.getElementById('result-emoji').textContent=won?'🎉':'😢';
-  const title=document.getElementById('result-title');
-  title.textContent=won?'You Got It!':'Oh No!';
-  title.className='result-title '+(won?'win':'lose');
-  document.getElementById('result-answer').innerHTML=won
-    ?`<strong>Brilliant! The answer was "${state.word}"</strong>`
-    :`The answer was: <strong>${state.word}</strong>`;
-  document.getElementById('result-score').textContent=
-    won?`+${state.score} points total | Streak: ${state.streak} 🔥`
-       :`Score: ${state.score} | Streak reset`;
-  overlay.classList.add('show');
-}
-
-function playAgain() {
+function playAgain(){
   document.getElementById('result-overlay').classList.remove('show');
   newRound();
 }
 
-// ============================================================
-// KEYBOARD INPUT
-// ============================================================
 document.addEventListener('keydown',(e)=>{
-  if (document.getElementById('game').classList.contains('active')) {
+  if(document.getElementById('game').classList.contains('active')){
     const letter=e.key.toUpperCase();
-    if (/^[A-Z]$/.test(letter)) guess(letter);
+    if(/^[A-Z]$/.test(letter)){if(AC.state==='suspended')AC.resume();playKeyClick();guess(letter);}
   }
 });
 </script>
