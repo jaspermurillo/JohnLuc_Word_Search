@@ -8,8 +8,6 @@
 body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0%,#B0E0E6 38%,#90EE90 38%,#4CAF50 100%);min-height:100vh;overflow-x:hidden;}
 .screen{display:none;width:100%;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
-
-/* HOME */
 #home{align-items:center;justify-content:center;padding:16px;gap:12px;position:relative;overflow:hidden;}
 .sun{position:absolute;top:-10px;right:-10px;width:90px;height:90px;background:#FFD600;border-radius:50%;box-shadow:0 0 0 10px rgba(255,214,0,.3);}
 .cl{position:absolute;background:#fff;border-radius:50px;opacity:.85;}
@@ -27,8 +25,6 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0
 .cb.w{background:linear-gradient(135deg,#EBF5FB,#D6EAF8);}.cb.s{background:linear-gradient(135deg,#FEF9E7,#FCF3CF);}.cb.co{background:linear-gradient(135deg,#E8F8F5,#D1F2EB);}.cb.ca{background:linear-gradient(135deg,#F4ECF7,#E8DAEF);}.cb.cr{background:linear-gradient(135deg,#FDEDEC,#FADBD8);}.cb.e{background:linear-gradient(135deg,#FEF5E7,#FDEBD0);}.cb.p{background:linear-gradient(135deg,#EAFAF1,#D5F5E3);}.cb.ph{background:linear-gradient(135deg,#EBF5FB,#D2E9FC);}
 .start-btn{background:linear-gradient(135deg,#FF6B9D,#FF4757);color:#fff;border:none;border-radius:16px;padding:14px 36px;font-family:'Fredoka One',cursive;font-size:20px;letter-spacing:1px;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.15);transition:transform .12s,box-shadow .12s;width:100%;max-width:360px;}
 .start-btn:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.15);}
-
-/* GAME */
 #game{align-items:center;padding:0;}
 .gh{width:100%;display:flex;align-items:center;justify-content:space-between;padding:8px 14px;background:rgba(255,255,255,.25);}
 .back-btn{background:#fff;border:none;border-radius:10px;padding:7px 12px;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:#2C3E50;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.1);}
@@ -36,8 +32,6 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0
 .sb{background:#fff;border-radius:10px;padding:5px 11px;font-weight:800;font-size:12px;color:#2C3E50;box-shadow:0 3px 0 rgba(0,0,0,.1);}
 .sb span{color:#FF6B9D;font-size:14px;}
 .cat-tag{background:rgba(255,255,255,.9);border-radius:8px;padding:4px 9px;font-size:10px;font-weight:800;color:#6C3483;text-transform:uppercase;letter-spacing:.5px;}
-
-/* LIVES BAR */
 .lives-bar{width:100%;max-width:400px;padding:8px 12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .lives-label{font-size:11px;font-weight:800;color:rgba(255,255,255,.95);text-shadow:1px 1px 0 rgba(0,0,0,.2);letter-spacing:.5px;text-transform:uppercase;}
 .hearts-row{display:flex;gap:4px;flex-wrap:wrap;justify-content:center;}
@@ -45,32 +39,19 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0
 .heart.lost{opacity:.2;transform:scale(.8);filter:grayscale(1);}
 .heart.shake{animation:hs .3s ease;}
 @keyframes hs{0%,100%{transform:scale(.8);}50%{transform:scale(1.3) rotate(-15deg);}}
-.heart.pulse{animation:hp .25s ease;}
-@keyframes hp{0%{transform:scale(1);}50%{transform:scale(1.3);}100%{transform:scale(1);}}
-
-/* WORD */
 .word-area{width:100%;max-width:400px;padding:8px 10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;}
 .word-row{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;align-items:flex-end;}
-.lb{width:36px;height:42px;background:#fff;border-radius:10px;border:2.5px solid #AED6F1;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:#2C3E50;box-shadow:0 4px 0 #AED6F1;transition:all .25s;position:relative;}
+.lb{width:36px;height:42px;background:#fff;border-radius:10px;border:2.5px solid #AED6F1;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:22px;color:#2C3E50;box-shadow:0 4px 0 #AED6F1;transition:all .25s;}
 .lb.sp{width:12px;background:transparent;border:none;box-shadow:none;}
 .lb.rev{background:#EAFAF1;border-color:#27AE60;box-shadow:0 4px 0 #1E8449;color:#1A5276;animation:pltr .3s ease;}
 @keyframes pltr{0%{transform:scale(1.4);}100%{transform:scale(1);}}
-.lb.shk{animation:shk .3s ease;}
-@keyframes shk{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
-
-/* HINT */
 .hint-sec{width:100%;max-width:400px;padding:4px 14px 0;}
 .hint-btn{background:linear-gradient(135deg,#F39C12,#E67E22);color:#fff;border:none;border-radius:10px;padding:7px 18px;font-family:'Nunito',sans-serif;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.15);display:flex;align-items:center;gap:5px;transition:transform .12s;}
 .hint-btn:active{transform:translateY(2px);}
-.hint-btn:disabled{background:#BDC3C7;cursor:default;box-shadow:none;}
 .hint-txt{font-size:11px;font-weight:700;color:#6C3483;background:#F4ECF7;border-radius:8px;padding:5px 10px;margin-top:4px;line-height:1.4;}
-
-/* WRONG LETTERS */
 .wrong-area{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;padding:4px 14px;max-width:400px;width:100%;}
 .wc{background:#FADBD8;border:2px solid #E74C3C;border-radius:7px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-family:'Fredoka One',cursive;font-size:14px;color:#C0392B;animation:pw .25s ease;}
 @keyframes pw{0%{transform:scale(1.3);}100%{transform:scale(1);}}
-
-/* KEYBOARD */
 .kb-area{width:100%;max-width:400px;padding:6px 8px 10px;display:flex;flex-direction:column;gap:4px;margin-top:auto;}
 .key-row{display:flex;gap:3px;justify-content:center;}
 .key{flex:1;max-width:36px;height:46px;background:#fff;border:none;border-radius:10px;font-family:'Fredoka One',cursive;font-size:17px;color:#2C3E50;cursor:pointer;box-shadow:0 3px 0 #BDC3C7;transition:transform .1s,box-shadow .1s,background .2s;display:flex;align-items:center;justify-content:center;}
@@ -78,8 +59,6 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0
 .key.uc{background:#EAFAF1;color:#1E8449;box-shadow:0 3px 0 #1E8449;cursor:default;}
 .key.uw{background:#FADBD8;color:#C0392B;box-shadow:0 3px 0 #E74C3C;cursor:default;}
 .key:disabled{opacity:.5;cursor:default;}
-
-/* FULL-SCREEN RESULT */
 .res-overlay{display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;padding:20px;}
 .res-overlay.show{display:flex;}
 .res-bg{position:absolute;inset:0;opacity:.97;}
@@ -145,7 +124,7 @@ body{font-family:'Nunito',sans-serif;background:linear-gradient(180deg,#87CEEB 0
   </div>
 
   <div class="hint-sec">
-    <button class="hint-btn" id="hint-btn" onclick="useHint()">💡 Hint <span id="hints-left">(10 left)</span></button>
+    <button class="hint-btn" id="hint-btn" onclick="useHint()">💡 Show Hint</button>
     <div class="hint-txt" id="hint-text" style="display:none;"></div>
   </div>
 
@@ -198,56 +177,26 @@ const DB={
 DB.all={label:"Random Mix",hint_label:"Hint:",items:Object.values(DB).filter(v=>v.items).flatMap(v=>v.items)};
 
 const MAX_WRONG=10;
-let state={category:'',word:'',hint:'',guessed:[],wrongGuesses:[],hintsLeft:10,score:0,streak:0,usedIndices:[],gameOver:false};
+let state={category:'',word:'',hint:'',guessed:[],wrongGuesses:[],score:0,streak:0,usedIndices:[],gameOver:false};
 
-/* AUDIO */
 const AC=new (window.AudioContext||window.webkitAudioContext)();
-function beep(freq,dur,type='sine',vol=.25){
-  const o=AC.createOscillator(),g=AC.createGain();
-  o.connect(g);g.connect(AC.destination);
-  o.type=type;o.frequency.setValueAtTime(freq,AC.currentTime);
-  g.gain.setValueAtTime(vol,AC.currentTime);
-  g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+dur);
-  o.start();o.stop(AC.currentTime+dur);
-}
+function beep(freq,dur,type='sine',vol=.25){const o=AC.createOscillator(),g=AC.createGain();o.connect(g);g.connect(AC.destination);o.type=type;o.frequency.setValueAtTime(freq,AC.currentTime);g.gain.setValueAtTime(vol,AC.currentTime);g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+dur);o.start();o.stop(AC.currentTime+dur);}
 function playCorrect(){beep(523,.08,'sine',.2);setTimeout(()=>beep(659,.08,'sine',.2),80);setTimeout(()=>beep(784,.15,'sine',.2),160);}
 function playWrong(){beep(220,.12,'sawtooth',.15);setTimeout(()=>beep(180,.2,'sawtooth',.12),100);}
-function playWin(){
-  const notes=[523,659,784,1047];
-  notes.forEach((f,i)=>setTimeout(()=>beep(f,.18,'sine',.3),i*100));
-  setTimeout(()=>{beep(784,.08,'sine',.2);setTimeout(()=>beep(1047,.4,'sine',.25),80);},500);
-}
-function playLose(){
-  beep(400,.15,'sawtooth',.2);setTimeout(()=>beep(300,.15,'sawtooth',.2),150);setTimeout(()=>beep(200,.5,'sawtooth',.25),300);
-}
-function playKeyClick(){beep(800,.04,'sine',.08);}
+function playWin(){const notes=[523,659,784,1047];notes.forEach((f,i)=>setTimeout(()=>beep(f,.18,'sine',.3),i*100));setTimeout(()=>{beep(784,.08,'sine',.2);setTimeout(()=>beep(1047,.4,'sine',.25),80);},500);}
+function playLose(){beep(400,.15,'sawtooth',.2);setTimeout(()=>beep(300,.15,'sawtooth',.2),150);setTimeout(()=>beep(200,.5,'sawtooth',.25),300);}
+function playHint(){beep(440,.1,'sine',.15);setTimeout(()=>beep(550,.15,'sine',.15),100);}
 
-/* CONFETTI */
 const CONF_COLS=['#FF6B9D','#FFD600','#27AE60','#3498DB','#FF8C42','#9B59B6','#1ABC9C'];
-function launchConfetti(){
-  const c=document.getElementById('confetti');c.innerHTML='';
-  for(let i=0;i<60;i++){
-    const p=document.createElement('div');p.className='cb-p';
-    p.style.cssText=`left:${Math.random()*100}%;top:-10px;background:${CONF_COLS[i%CONF_COLS.length]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${.8+Math.random()*.8}s;animation-delay:${Math.random()*.4}s;`;
-    c.appendChild(p);
-  }
-}
+function launchConfetti(){const c=document.getElementById('confetti');c.innerHTML='';for(let i=0;i<60;i++){const p=document.createElement('div');p.className='cb-p';p.style.cssText=`left:${Math.random()*100}%;top:-10px;background:${CONF_COLS[i%CONF_COLS.length]};width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;border-radius:${Math.random()>.5?'50%':'3px'};animation-duration:${.8+Math.random()*.8}s;animation-delay:${Math.random()*.4}s;`;c.appendChild(p);}}
 
-function pickWord(cat){
-  const pool=DB[cat].items;
-  if(state.usedIndices.length>=pool.length)state.usedIndices=[];
-  let idx;
-  do{idx=Math.floor(Math.random()*pool.length);}while(state.usedIndices.includes(idx));
-  state.usedIndices.push(idx);
-  return pool[idx];
-}
-
+function pickWord(cat){const pool=DB[cat].items;if(state.usedIndices.length>=pool.length)state.usedIndices=[];let idx;do{idx=Math.floor(Math.random()*pool.length);}while(state.usedIndices.includes(idx));state.usedIndices.push(idx);return pool[idx];}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function goHome(){showScreen('home');state.usedIndices=[];state.score=0;state.streak=0;}
 
 function startGame(cat){
   if(AC.state==='suspended')AC.resume();
-  state.category=cat;state.hintsLeft=10;newRound();showScreen('game');
+  state.category=cat;newRound();showScreen('game');
 }
 
 function newRound(){
@@ -259,33 +208,19 @@ function newRound(){
   document.getElementById('streak-display').textContent=state.streak;
   document.getElementById('hint-text').style.display='none';
   document.getElementById('result-overlay').classList.remove('show');
-  const hb=document.getElementById('hint-btn');
-  hb.disabled=state.hintsLeft===0;
-  document.getElementById('hints-left').textContent=`(${state.hintsLeft} left)`;
   renderHearts();renderWord();renderWrong();renderKeyboard();
 }
 
 function renderHearts(){
-  const row=document.getElementById('hearts-row');
-  row.innerHTML='';
+  const row=document.getElementById('hearts-row');row.innerHTML='';
   const remaining=MAX_WRONG-state.wrongGuesses.length;
   document.getElementById('lives-label').textContent=remaining+' '+(remaining===1?'life':'lives')+' left';
-  for(let i=0;i<MAX_WRONG;i++){
-    const h=document.createElement('div');
-    h.className='heart'+(i>=remaining?' lost':'');
-    h.id='heart-'+i;h.textContent='❤️';
-    row.appendChild(h);
-  }
+  for(let i=0;i<MAX_WRONG;i++){const h=document.createElement('div');h.className='heart'+(i>=remaining?' lost':'');h.id='heart-'+i;h.textContent='❤️';row.appendChild(h);}
 }
 
 function renderWord(){
   const row=document.getElementById('word-row');row.innerHTML='';
-  [...state.word].forEach(ch=>{
-    const b=document.createElement('div');
-    if(ch===' '){b.className='lb sp';}
-    else{b.className='lb'+(state.guessed.includes(ch)?' rev':'');b.textContent=state.guessed.includes(ch)?ch:'';}
-    row.appendChild(b);
-  });
+  [...state.word].forEach(ch=>{const b=document.createElement('div');if(ch===' '){b.className='lb sp';}else{b.className='lb'+(state.guessed.includes(ch)?' rev':'');b.textContent=state.guessed.includes(ch)?ch:'';}row.appendChild(b);});
 }
 
 function renderWrong(){
@@ -296,18 +231,7 @@ function renderWrong(){
 function renderKeyboard(){
   const rows=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['Z','X','C','V','B','N','M']];
   const area=document.getElementById('keyboard-area');area.innerHTML='';
-  rows.forEach(row=>{
-    const rd=document.createElement('div');rd.className='key-row';
-    row.forEach(letter=>{
-      const btn=document.createElement('button');btn.className='key';btn.textContent=letter;btn.id='key-'+letter;
-      const guessed=state.guessed.includes(letter),wrong=state.wrongGuesses.includes(letter);
-      if(guessed){btn.classList.add('uc');btn.disabled=true;}
-      else if(wrong){btn.classList.add('uw');btn.disabled=true;}
-      else{btn.onclick=()=>guess(letter);}
-      rd.appendChild(btn);
-    });
-    area.appendChild(rd);
-  });
+  rows.forEach(row=>{const rd=document.createElement('div');rd.className='key-row';row.forEach(letter=>{const btn=document.createElement('button');btn.className='key';btn.textContent=letter;btn.id='key-'+letter;const guessed=state.guessed.includes(letter),wrong=state.wrongGuesses.includes(letter);if(guessed){btn.classList.add('uc');btn.disabled=true;}else if(wrong){btn.classList.add('uw');btn.disabled=true;}else{btn.onclick=()=>guess(letter);}rd.appendChild(btn);});area.appendChild(rd);});
 }
 
 function guess(letter){
@@ -317,23 +241,15 @@ function guess(letter){
   if(AC.state==='suspended')AC.resume();
   const btn=document.getElementById('key-'+letter);
   if(state.word.includes(letter)){
-    state.guessed.push(letter);
-    btn.classList.add('uc');btn.disabled=true;
-    playCorrect();
-    renderWord();
-    checkWin();
+    state.guessed.push(letter);btn.classList.add('uc');btn.disabled=true;
+    playCorrect();renderWord();checkWin();
   } else {
-    state.wrongGuesses.push(letter);
-    btn.classList.add('uw');btn.disabled=true;
+    state.wrongGuesses.push(letter);btn.classList.add('uw');btn.disabled=true;
     playWrong();
     const remaining=MAX_WRONG-state.wrongGuesses.length;
     renderHearts();
-    if(remaining>=0&&remaining<MAX_WRONG){
-      const hEl=document.getElementById('heart-'+remaining);
-      if(hEl)hEl.classList.add('shake');
-    }
-    renderWrong();
-    checkLose();
+    if(remaining>=0&&remaining<MAX_WRONG){const hEl=document.getElementById('heart-'+remaining);if(hEl)hEl.classList.add('shake');}
+    renderWrong();checkLose();
   }
   btn.onclick=null;
 }
@@ -342,30 +258,22 @@ function checkWin(){
   const letters=[...new Set(state.word.replace(/ /g,'').split(''))];
   if(letters.every(l=>state.guessed.includes(l))){
     state.gameOver=true;
-    state.score+=10+(state.hintsLeft*2)+Math.max(0,(MAX_WRONG-state.wrongGuesses.length)*3);
-    state.streak++;
-    playWin();
-    setTimeout(()=>showResult(true),600);
+    state.score+=10+Math.max(0,(MAX_WRONG-state.wrongGuesses.length)*3);
+    state.streak++;playWin();setTimeout(()=>showResult(true),600);
   }
 }
 
 function checkLose(){
-  if(state.wrongGuesses.length>=MAX_WRONG){
-    state.gameOver=true;state.streak=0;
-    playLose();
-    setTimeout(()=>showResult(false),600);
-  }
+  if(state.wrongGuesses.length>=MAX_WRONG){state.gameOver=true;state.streak=0;playLose();setTimeout(()=>showResult(false),600);}
 }
 
 function useHint(){
-  if(state.hintsLeft<=0)return;
-  state.hintsLeft--;
-  document.getElementById('hints-left').textContent=`(${state.hintsLeft} left)`;
-  if(state.hintsLeft===0)document.getElementById('hint-btn').disabled=true;
+  if(state.gameOver)return;
+  if(AC.state==='suspended')AC.resume();
+  playHint();
   const ht=document.getElementById('hint-text');
   ht.textContent=`💡 ${DB[state.category].hint_label||'Hint:'} ${state.hint}`;
   ht.style.display='block';
-  beep(440,.1,'sine',.15);setTimeout(()=>beep(550,.15,'sine',.15),100);
 }
 
 function showResult(won){
@@ -374,21 +282,17 @@ function showResult(won){
   document.getElementById('res-title').textContent=won?'You Got It!':'Oh No!';
   document.getElementById('res-word').textContent=won?`✅ ${state.word}`:`💀 ${state.word}`;
   document.getElementById('res-score').textContent=won?`Score: ${state.score} pts  |  Streak: ${state.streak} 🔥`:`Score: ${state.score}  |  Streak reset`;
-  const bg=document.getElementById('res-bg');
-  bg.className='res-bg '+(won?'win-bg':'lose-bg');
+  document.getElementById('res-bg').className='res-bg '+(won?'win-bg':'lose-bg');
   ov.classList.add('show');
   if(won)launchConfetti();
 }
 
-function playAgain(){
-  document.getElementById('result-overlay').classList.remove('show');
-  newRound();
-}
+function playAgain(){document.getElementById('result-overlay').classList.remove('show');newRound();}
 
 document.addEventListener('keydown',(e)=>{
   if(document.getElementById('game').classList.contains('active')){
     const letter=e.key.toUpperCase();
-    if(/^[A-Z]$/.test(letter)){if(AC.state==='suspended')AC.resume();playKeyClick();guess(letter);}
+    if(/^[A-Z]$/.test(letter)){if(AC.state==='suspended')AC.resume();guess(letter);}
   }
 });
 </script>
